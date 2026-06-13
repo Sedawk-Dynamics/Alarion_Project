@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign In — Alarion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#0B1120; --navy-2:#0E1426; --charcoal:#111827;
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
+    --ink:#F8FAFC; --ink-dim:#B7BECC; --ink-mute:#7A8295;
+    --gold:#C9A66B; --gold-2:#E7C68A;
+    --emerald:#10B981; --royal:#2563EB;
+    --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px rgba(0,0,0,.35);
+    --shadow-2: 0 20px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.04) inset;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0; height:100%}
+  body{
+    background:var(--navy); color:var(--ink);
+    font-family:"Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    min-height:100vh;
+  }
+  img{max-width:100%; display:block}
+  a{color:inherit; text-decoration:none}
+  button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  input{font-family:inherit}
+  .eyebrow{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:500; display:inline-flex; align-items:center; gap:10px }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); opacity:.7}
+
+  .auth{ display:grid; grid-template-columns: 1.05fr 1fr; min-height:100vh }
+
+  /* LEFT — visual panel */
+  .auth-visual{ position:relative; overflow:hidden; isolation:isolate; padding:44px }
+  .auth-visual .bg{
+    position:absolute; inset:0; z-index:-2;
+    background:
+      linear-gradient(180deg, rgba(11,17,32,.35) 0%, rgba(11,17,32,.6) 60%, rgba(11,17,32,.92) 100%),
+      url("https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1600&q=80&auto=format&fit=crop") center/cover no-repeat;
+    transform:scale(1.03);
+  }
+  .auth-visual .top{ display:flex; align-items:center; justify-content:space-between }
+  .av-brand img{ height:50px; width:auto; filter:brightness(1.05) }
+  .av-back{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:9px 16px; border-radius:999px;
+    background:rgba(11,17,32,.5); border:1px solid var(--line-strong);
+    backdrop-filter:blur(12px); font-size:12.5px; font-weight:500; color:var(--ink-dim);
+    transition:background .2s, color .2s;
+  }
+  .av-back:hover{ background:rgba(11,17,32,.75); color:var(--ink) }
+  .av-back svg{ width:13px; height:13px }
+  .auth-visual .quote{ position:absolute; left:44px; right:44px; bottom:44px }
+  .auth-visual .quote .q{
+    font-family:"Italiana", serif; font-weight:400; font-size:clamp(28px,3.2vw,44px);
+    line-height:1.12; letter-spacing:-.005em; margin:0 0 20px; max-width:560px;
+  }
+  .auth-visual .quote .q em{ font-style:italic; color:var(--gold-2) }
+  .auth-visual .quote .by{ display:flex; align-items:center; gap:12px; color:var(--ink-dim); font-size:13px }
+  .auth-visual .quote .by .av{ width:40px; height:40px; border-radius:50%; background-size:cover; background-position:center; border:1px solid var(--line-strong) }
+  .auth-visual .quote .by b{ color:var(--ink); font-weight:600 }
+
+  /* RIGHT — form */
+  .auth-form-wrap{ display:flex; align-items:center; justify-content:center; padding:48px 40px; background:var(--navy) }
+  .auth-card{ width:100%; max-width:420px }
+  .auth-card h1{ font-family:"Italiana", serif; font-weight:400; font-size:40px; line-height:1.05; margin:16px 0 8px; letter-spacing:-.005em }
+  .auth-card .lede{ color:var(--ink-dim); font-size:14.5px; line-height:1.55; margin:0 0 30px }
+
+  .tabs{ display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:5px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid var(--line); margin-bottom:28px }
+  .tab{ padding:11px; border-radius:10px; font-size:13.5px; font-weight:600; color:var(--ink-mute); letter-spacing:.02em; transition:background .25s, color .25s }
+  .tab.on{ background:var(--gold); color:#1a1206 }
+
+  .field{ margin-bottom:16px }
+  .field label{ display:block; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); font-weight:600; margin-bottom:8px }
+  .input-wrap{ position:relative; display:flex; align-items:center }
+  .input-wrap svg.lead{ position:absolute; left:15px; width:16px; height:16px; color:var(--ink-mute); pointer-events:none }
+  .field input{
+    width:100%; padding:14px 15px 14px 44px; border-radius:12px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong); color:var(--ink);
+    font-size:14.5px; outline:none; transition:border-color .2s, background .2s;
+  }
+  .field input::placeholder{ color:var(--ink-mute) }
+  .field input:focus{ border-color:var(--gold); background:rgba(255,255,255,.06) }
+  .field input.err{ border-color:#e2725b }
+  .field .hint{ font-size:11.5px; color:#e2725b; margin-top:6px; display:none }
+  .field.invalid .hint{ display:block }
+  .pw-toggle{ position:absolute; right:12px; width:30px; height:30px; display:grid; place-items:center; color:var(--ink-mute); border-radius:8px }
+  .pw-toggle:hover{ color:var(--ink-dim) }
+  .pw-toggle svg{ width:17px; height:17px }
+
+  .row-between{ display:flex; align-items:center; justify-content:space-between; margin:6px 0 24px }
+  .remember{ display:flex; align-items:center; gap:9px; font-size:13px; color:var(--ink-dim); cursor:pointer; user-select:none }
+  .remember .box{ width:18px; height:18px; border-radius:5px; border:1.5px solid var(--line-strong); display:grid; place-items:center; transition:background .2s, border-color .2s }
+  .remember .box svg{ width:11px; height:11px; opacity:0; color:#1a1206; transition:opacity .15s }
+  .remember.on .box{ background:var(--gold); border-color:var(--gold) }
+  .remember.on .box svg{ opacity:1 }
+  .forgot{ font-size:13px; color:var(--gold); font-weight:500 }
+  .forgot:hover{ color:var(--gold-2) }
+
+  .submit{
+    width:100%; padding:15px; border-radius:12px;
+    background:linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%); color:#1a1206;
+    font-weight:700; font-size:14.5px; letter-spacing:.01em;
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    box-shadow:0 14px 34px -12px rgba(201,166,107,.6), 0 0 0 1px rgba(255,255,255,.15) inset;
+    transition:transform .2s; margin-bottom:22px;
+  }
+  .submit:hover{ transform:translateY(-1px) }
+  .submit:active{ transform:translateY(0) scale(.99) }
+  .submit svg{ width:16px; height:16px }
+
+  .divider{ display:flex; align-items:center; gap:14px; color:var(--ink-mute); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:22px }
+  .divider::before, .divider::after{ content:""; flex:1; height:1px; background:var(--line) }
+  .socials{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px }
+  .soc{ display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px; border-radius:11px; background:rgba(255,255,255,.04); border:1px solid var(--line-strong); font-size:13.5px; font-weight:600; color:var(--ink-dim); transition:background .2s, border-color .2s, color .2s }
+  .soc:hover{ background:rgba(255,255,255,.08); color:var(--ink); border-color:var(--line-strong) }
+  .soc svg{ width:17px; height:17px }
+
+  .swap{ text-align:center; font-size:13.5px; color:var(--ink-dim) }
+  .swap button{ color:var(--gold); font-weight:600 }
+  .swap button:hover{ color:var(--gold-2) }
+
+  .terms{ display:flex; align-items:flex-start; gap:10px; font-size:12.5px; color:var(--ink-dim); line-height:1.5; margin:2px 0 22px; cursor:pointer; user-select:none }
+  .terms .box{ width:18px; height:18px; flex-shrink:0; border-radius:5px; border:1.5px solid var(--line-strong); display:grid; place-items:center; margin-top:1px; transition:background .2s, border-color .2s }
+  .terms .box svg{ width:11px; height:11px; opacity:0; color:#1a1206; transition:opacity .15s }
+  .terms.on .box{ background:var(--gold); border-color:var(--gold) }
+  .terms.on .box svg{ opacity:1 }
+  .terms a{ color:var(--gold); font-weight:500 }
+
+  .hidden{ display:none }
+
+  /* success toast */
+  .toast{
+    position:fixed; top:24px; left:50%; transform:translateX(-50%) translateY(-130%);
+    z-index:100; display:flex; align-items:center; gap:12px;
+    padding:14px 22px; border-radius:14px;
+    background:rgba(14,20,38,.96); border:1px solid rgba(16,185,129,.4);
+    box-shadow:var(--shadow-2); backdrop-filter:blur(14px);
+    font-size:14px; font-weight:500;
+    transition:transform .45s cubic-bezier(.2,.7,.2,1);
+  }
+  .toast.show{ transform:translateX(-50%) translateY(0) }
+  .toast .ic{ width:30px; height:30px; border-radius:50%; display:grid; place-items:center; background:rgba(16,185,129,.16); color:var(--emerald) }
+  .toast .ic svg{ width:16px; height:16px }
+
+  @media (max-width: 900px){
+    .auth{ grid-template-columns:1fr }
+    .auth-visual{ display:none }
+    .auth-form-wrap{ padding:40px 24px; min-height:100vh }
+  }
+</style>
+</head>
+<body>
+
+<div class="auth">
+  <!-- VISUAL -->
+  <div class="auth-visual">
+    <div class="bg"></div>
+    <div class="top">
+      <a class="av-brand" href="Alarion Landing.html"><img src="assets/alarion-logo.png" alt="Alarion" /></a>
+      <a class="av-back" href="Alarion Landing.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 19l-7-7 7-7"/></svg>
+        Back to site
+      </a>
+    </div>
+    <div class="quote">
+      <p class="q">“The concierge remembered our anniversary from a stay three years ago. That's the <em>Alarion</em> difference.”</p>
+      <div class="by">
+        <span class="av" style="background-image:url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&q=80&auto=format&fit=crop')"></span>
+        <span><b>Ananya Krishnan</b> · Member since 2021</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="auth-form-wrap">
+    <div class="auth-card">
+      <div class="eyebrow" id="form-eyebrow">Welcome back</div>
+      <h1 id="form-title">Sign in to Alarion</h1>
+      <p class="lede" id="form-lede">Access your bookings, saved stays and member rates.</p>
+
+      <div class="tabs">
+        <button class="tab on" id="tab-signin" type="button">Sign In</button>
+        <button class="tab" id="tab-signup" type="button">Create Account</button>
+      </div>
+
+      <!-- SIGN IN -->
+      <form id="form-signin" novalidate>
+        <div class="field" id="si-email-f">
+          <label>Email address</label>
+          <div class="input-wrap">
+            <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+            <input type="email" id="si-email" placeholder="you@example.com" />
+          </div>
+          <div class="hint">Please enter a valid email.</div>
+        </div>
+        <div class="field" id="si-pw-f">
+          <label>Password</label>
+          <div class="input-wrap">
+            <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <input type="password" id="si-pw" placeholder="••••••••" />
+            <button type="button" class="pw-toggle" data-target="si-pw" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="hint">Password is required.</div>
+        </div>
+        <div class="row-between">
+          <div class="remember on" id="remember"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Remember me</div>
+          <a class="forgot" href="#">Forgot password?</a>
+        </div>
+        <button class="submit" type="submit">
+          Sign In
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+        <div class="divider">or continue with</div>
+        <div class="socials">
+          <button type="button" class="soc"><svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.24 1.4-.97 2.6-2.06 3.4l3.3 2.6c1.93-1.8 3.04-4.4 3.04-7.5 0-.7-.06-1.4-.18-2z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.4l-3.3-2.6c-.9.6-2.05.96-3.32.96-2.55 0-4.7-1.7-5.48-4.05l-3.4 2.6C4.46 19.9 7.95 22 12 22z"/><path fill="#4285F4" d="M6.52 13.9A6 6 0 016.2 12c0-.66.11-1.3.31-1.9l-3.4-2.6A10 10 0 002 12c0 1.6.38 3.1 1.06 4.5z"/><path fill="#FBBC05" d="M12 6c1.47 0 2.78.5 3.82 1.5l2.86-2.86C16.96 2.99 14.7 2 12 2 7.95 2 4.46 4.1 3.11 7.5l3.4 2.6C7.3 7.75 9.45 6 12 6z"/></svg>Google</button>
+          <button type="button" class="soc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 1.43c.04 1.06-.36 2.1-1.04 2.86-.71.8-1.86 1.42-2.98 1.33-.06-1.04.4-2.12 1.05-2.84.72-.8 1.97-1.4 2.97-1.35zM20.5 17.1c-.55 1.27-.81 1.83-1.52 2.95-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.93-1-4.02-.99-2.08.01-2.52.99-4.06.97-1.73-.01-3.05-1.76-4.04-3.32-2.77-4.34-3.06-9.43-1.35-12.14 1.21-1.93 3.13-3.06 4.93-3.06 1.84 0 3 1 4.52 1 1.48 0 2.38-1 4.5-1 1.61 0 3.31.88 4.53 2.39-3.98 2.18-3.33 7.87.15 9.69z"/></svg>Apple</button>
+        </div>
+        <div class="swap">New to Alarion? <button type="button" id="go-signup">Create an account</button></div>
+      </form>
+
+      <!-- SIGN UP -->
+      <form id="form-signup" class="hidden" novalidate>
+        <div class="field" id="su-name-f">
+          <label>Full name</label>
+          <div class="input-wrap">
+            <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="su-name" placeholder="Ananya Krishnan" />
+          </div>
+          <div class="hint">Please enter your name.</div>
+        </div>
+        <div class="field" id="su-email-f">
+          <label>Email address</label>
+          <div class="input-wrap">
+            <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
+            <input type="email" id="su-email" placeholder="you@example.com" />
+          </div>
+          <div class="hint">Please enter a valid email.</div>
+        </div>
+        <div class="field" id="su-pw-f">
+          <label>Password</label>
+          <div class="input-wrap">
+            <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <input type="password" id="su-pw" placeholder="At least 8 characters" />
+            <button type="button" class="pw-toggle" data-target="su-pw" aria-label="Show password">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="hint">Password must be at least 8 characters.</div>
+        </div>
+        <div class="terms" id="su-terms"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><span>I agree to Alarion's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</span></div>
+        <div class="field hint" id="su-terms-hint" style="margin-top:-12px; margin-bottom:18px; display:none">Please accept the terms to continue.</div>
+        <button class="submit" type="submit">
+          Create Account
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+        <div class="divider">or sign up with</div>
+        <div class="socials">
+          <button type="button" class="soc"><svg viewBox="0 0 24 24"><path fill="#EA4335" d="M12 10.2v3.9h5.5c-.24 1.4-.97 2.6-2.06 3.4l3.3 2.6c1.93-1.8 3.04-4.4 3.04-7.5 0-.7-.06-1.4-.18-2z"/><path fill="#34A853" d="M12 22c2.7 0 4.96-.9 6.62-2.4l-3.3-2.6c-.9.6-2.05.96-3.32.96-2.55 0-4.7-1.7-5.48-4.05l-3.4 2.6C4.46 19.9 7.95 22 12 22z"/><path fill="#4285F4" d="M6.52 13.9A6 6 0 016.2 12c0-.66.11-1.3.31-1.9l-3.4-2.6A10 10 0 002 12c0 1.6.38 3.1 1.06 4.5z"/><path fill="#FBBC05" d="M12 6c1.47 0 2.78.5 3.82 1.5l2.86-2.86C16.96 2.99 14.7 2 12 2 7.95 2 4.46 4.1 3.11 7.5l3.4 2.6C7.3 7.75 9.45 6 12 6z"/></svg>Google</button>
+          <button type="button" class="soc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 1.43c.04 1.06-.36 2.1-1.04 2.86-.71.8-1.86 1.42-2.98 1.33-.06-1.04.4-2.12 1.05-2.84.72-.8 1.97-1.4 2.97-1.35zM20.5 17.1c-.55 1.27-.81 1.83-1.52 2.95-.99 1.56-2.39 3.5-4.12 3.51-1.54.02-1.93-1-4.02-.99-2.08.01-2.52.99-4.06.97-1.73-.01-3.05-1.76-4.04-3.32-2.77-4.34-3.06-9.43-1.35-12.14 1.21-1.93 3.13-3.06 4.93-3.06 1.84 0 3 1 4.52 1 1.48 0 2.38-1 4.5-1 1.61 0 3.31.88 4.53 2.39-3.98 2.18-3.33 7.87.15 9.69z"/></svg>Apple</button>
+        </div>
+        <div class="swap">Already a member? <button type="button" id="go-signin">Sign in instead</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- toast -->
+<div class="toast" id="toast">
+  <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+  <span id="toast-msg">Signed in successfully</span>
+</div>
+
+<script>
+  (function(){
+    var signin = document.getElementById('form-signin');
+    var signup = document.getElementById('form-signup');
+    var tabSI = document.getElementById('tab-signin');
+    var tabSU = document.getElementById('tab-signup');
+    var eyebrow = document.getElementById('form-eyebrow');
+    var title = document.getElementById('form-title');
+    var lede = document.getElementById('form-lede');
+
+    function show(mode){
+      var isSU = mode === 'signup';
+      signin.classList.toggle('hidden', isSU);
+      signup.classList.toggle('hidden', !isSU);
+      tabSI.classList.toggle('on', !isSU);
+      tabSU.classList.toggle('on', isSU);
+      eyebrow.textContent = isSU ? 'Join Alarion' : 'Welcome back';
+      title.textContent = isSU ? 'Create your account' : 'Sign in to Alarion';
+      lede.textContent = isSU
+        ? 'Member rates, saved stays and a concierge who remembers you.'
+        : 'Access your bookings, saved stays and member rates.';
+    }
+    tabSI.addEventListener('click', function(){ show('signin'); });
+    tabSU.addEventListener('click', function(){ show('signup'); });
+    document.getElementById('go-signup').addEventListener('click', function(){ show('signup'); });
+    document.getElementById('go-signin').addEventListener('click', function(){ show('signin'); });
+    if(location.hash === '#signup') show('signup');
+
+    /* password visibility */
+    document.querySelectorAll('.pw-toggle').forEach(function(b){
+      b.addEventListener('click', function(){
+        var inp = document.getElementById(b.dataset.target);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+      });
+    });
+
+    /* checkbox toggles */
+    ['remember','su-terms'].forEach(function(id){
+      var el = document.getElementById(id);
+      el.addEventListener('click', function(){ el.classList.toggle('on'); });
+    });
+
+    function setInvalid(fieldId, bad){
+      var f = document.getElementById(fieldId);
+      f.classList.toggle('invalid', bad);
+      var inp = f.querySelector('input'); if(inp) inp.classList.toggle('err', bad);
+    }
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function toast(msg){
+      var t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.classList.add('show');
+      setTimeout(function(){ window.location.href = 'Alarion Landing.html'; }, 1300);
+    }
+
+    signin.addEventListener('submit', function(e){
+      e.preventDefault();
+      var em = document.getElementById('si-email').value.trim();
+      var pw = document.getElementById('si-pw').value;
+      var bad = false;
+      if(!emailRe.test(em)){ setInvalid('si-email-f', true); bad = true; } else setInvalid('si-email-f', false);
+      if(!pw){ setInvalid('si-pw-f', true); bad = true; } else setInvalid('si-pw-f', false);
+      if(bad) return;
+      toast('Signed in — welcome back');
+    });
+
+    signup.addEventListener('submit', function(e){
+      e.preventDefault();
+      var nm = document.getElementById('su-name').value.trim();
+      var em = document.getElementById('su-email').value.trim();
+      var pw = document.getElementById('su-pw').value;
+      var terms = document.getElementById('su-terms').classList.contains('on');
+      var bad = false;
+      if(!nm){ setInvalid('su-name-f', true); bad = true; } else setInvalid('su-name-f', false);
+      if(!emailRe.test(em)){ setInvalid('su-email-f', true); bad = true; } else setInvalid('su-email-f', false);
+      if(pw.length < 8){ setInvalid('su-pw-f', true); bad = true; } else setInvalid('su-pw-f', false);
+      document.getElementById('su-terms-hint').style.display = terms ? 'none' : 'block';
+      if(!terms) bad = true;
+      if(bad) return;
+      toast('Account created — welcome to Alarion');
+    });
+  })();
+</script>
+
+</body>
+</html>

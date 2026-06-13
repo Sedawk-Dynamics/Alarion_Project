@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Search Results — Alarion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#0B1120; --navy-2:#0E1426; --charcoal:#111827;
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
+    --ink:#F8FAFC; --ink-dim:#B7BECC; --ink-mute:#7A8295;
+    --gold:#C9A66B; --gold-2:#E7C68A;
+    --emerald:#10B981; --royal:#2563EB;
+    --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px rgba(0,0,0,.35);
+    --shadow-2: 0 20px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.04) inset;
+    --shadow-card: 0 30px 80px -20px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--navy); color:var(--ink);
+    font-family:"Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block}
+  a{color:inherit; text-decoration:none}
+  button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  input{font-family:inherit}
+  .container{max-width:1280px; margin:0 auto; padding:0 28px}
+  .eyebrow{
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold); font-weight:500;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); opacity:.7}
+
+  /* NAV */
+  .nav{
+    position:fixed; top:18px; left:50%; transform:translateX(-50%);
+    width:min(1280px, calc(100% - 32px));
+    z-index:60;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 22px;
+    background:rgba(11,17,32,.82);
+    border:1px solid var(--line-strong);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-radius:999px;
+    box-shadow: var(--shadow-1);
+  }
+  .brand{display:flex; align-items:center; gap:12px; font-weight:600}
+  .brand-logo{ height:48px; width:auto; display:block; filter: brightness(1.05) }
+  .nav .brand{ margin: -6px 0 }
+  .nav-links{display:flex; gap:26px; font-size:13.5px; color:var(--ink-dim); font-weight:500}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-actions{ display:flex; align-items:center; gap:16px }
+  .nav-list{ display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:var(--gold-2); transition:color .2s }
+  .nav-list:hover{ color:var(--gold) }
+  .nav-list svg{ width:14px; height:14px }
+  @media (max-width: 620px){ .nav-list{display:none} }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px;
+    background:var(--ink); color:var(--navy);
+    font-weight:600; font-size:13px;
+    transition:background .2s, transform .2s;
+  }
+  .nav-cta:hover{background:var(--gold-2); transform:translateY(-1px)}
+  .nav-cta svg{width:14px; height:14px}
+  @media (max-width: 920px){ .nav-links{display:none} }
+
+  /* SEARCH SUMMARY BAR */
+  .sr-bar{ padding: 116px 0 0 }
+  .sr-summary{
+    background: rgba(248,250,252,.05);
+    border:1px solid var(--line-strong);
+    border-radius:18px; padding:12px;
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr auto; gap:8px;
+    align-items:stretch; box-shadow: var(--shadow-1);
+  }
+  .sr-fld{
+    padding:12px 16px; border-radius:12px;
+    background:rgba(11,17,32,.4); border:1px solid transparent;
+    min-width:0; transition:border-color .2s, background .2s;
+  }
+  .sr-fld:focus-within, .sr-fld:hover{ border-color:var(--line); background:rgba(11,17,32,.6) }
+  .sr-fld .l{ font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mute); font-weight:600; margin-bottom:5px }
+  .sr-fld .v{ font-size:14.5px; font-weight:500; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+  .sr-fld input.v{ width:100%; background:transparent; border:0; outline:none; padding:0 }
+  .sr-go{
+    padding:0 28px; min-width:140px;
+    background: linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%);
+    color:#1a1206; font-weight:700; font-size:14px; letter-spacing:.02em;
+    border-radius:12px; display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    box-shadow: 0 12px 30px -12px rgba(201,166,107,.6), 0 0 0 1px rgba(255,255,255,.15) inset;
+    transition: transform .2s;
+  }
+  .sr-go:hover{ transform:translateY(-1px) }
+  .sr-go svg{ width:15px; height:15px }
+
+  /* QUICK FILTER CHIPS ROW */
+  .sr-quick{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px; font-size:13px }
+  .sr-quick .ql{ color:var(--ink-mute); letter-spacing:.04em; margin-right:2px }
+  .qchip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:9px 15px; border-radius:999px;
+    background:rgba(255,255,255,.03); border:1px solid var(--line-strong);
+    color:var(--ink-dim); font-size:12.5px; font-weight:500;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .qchip:hover{ color:var(--ink); border-color:var(--gold) }
+  .qchip.on{ background:var(--gold); color:#1a1206; border-color:var(--gold); font-weight:600 }
+  .qchip .qx{ width:14px; height:14px; opacity:.7 }
+
+  @media (max-width: 860px){
+    .sr-summary{ grid-template-columns:1fr 1fr }
+    .sr-go{ grid-column:1/-1; padding:14px }
+  }
+
+  /* LAYOUT */
+  .sr-layout{ display:grid; grid-template-columns: 290px 1fr; gap:28px; padding: 36px 0 100px; align-items:start }
+  @media (max-width: 940px){ .sr-layout{ grid-template-columns:1fr } }
+
+  /* ASIDE FILTERS */
+  .sr-aside{ position:sticky; top:108px; display:flex; flex-direction:column; gap:16px }
+  .fbox{ background:rgba(248,250,252,.03); border:1px solid var(--line); border-radius:18px; padding:22px 20px }
+  .fbox h4{ font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-mute); font-weight:600; margin:0 0 18px; display:flex; justify-content:space-between; align-items:center }
+  .fbox h4 button{ font-size:11px; color:var(--gold); letter-spacing:.06em; font-weight:600 }
+  .applied{ display:flex; flex-wrap:wrap; gap:8px }
+  .applied .none{ color:var(--ink-mute); font-size:13px }
+  .apill{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:7px 11px; border-radius:999px;
+    background:rgba(201,166,107,.1); border:1px solid rgba(201,166,107,.3);
+    color:var(--gold-2); font-size:12px; font-weight:500;
+  }
+  .apill button{ display:grid; place-items:center; color:var(--gold-2); opacity:.8 }
+  .apill svg{ width:12px; height:12px }
+
+  .frow{ display:flex; align-items:center; justify-content:space-between; padding:10px 0; cursor:pointer }
+  .frow + .frow{ border-top:1px solid var(--line) }
+  .check{
+    display:flex; align-items:center; gap:12px; font-size:14px; color:var(--ink-dim);
+  }
+  .check .box{
+    width:20px; height:20px; border-radius:6px; flex-shrink:0;
+    border:1.5px solid var(--line-strong); display:grid; place-items:center;
+    transition: background .2s, border-color .2s;
+  }
+  .check .box svg{ width:12px; height:12px; opacity:0; color:#1a1206; transition:opacity .15s }
+  .frow.on .check{ color:var(--ink) }
+  .frow.on .box{ background:var(--gold); border-color:var(--gold) }
+  .frow.on .box svg{ opacity:1 }
+  .frow .cnt{ font-size:12.5px; color:var(--ink-mute) }
+  .stars-inline{ display:inline-flex; gap:2px; color:var(--gold) }
+  .stars-inline svg{ width:13px; height:13px; fill:currentColor }
+
+  .price-val{ font-family:"Italiana", serif; font-size:20px; margin-bottom:14px }
+  .price-val span{ color:var(--gold-2) }
+  input[type=range].slider{
+    -webkit-appearance:none; appearance:none; width:100%; height:4px; border-radius:999px;
+    background:linear-gradient(90deg, var(--gold) var(--fill,50%), rgba(255,255,255,.12) var(--fill,50%));
+    outline:none;
+  }
+  input[type=range].slider::-webkit-slider-thumb{
+    -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+    background:var(--gold-2); border:2px solid #1a1206; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.4);
+  }
+  input[type=range].slider::-moz-range-thumb{
+    width:18px; height:18px; border-radius:50%; background:var(--gold-2); border:2px solid #1a1206; cursor:pointer;
+  }
+  .price-ends{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--ink-mute); margin-top:10px }
+
+  /* MAIN */
+  .sr-title{ font-family:"Italiana", serif; font-weight:400; font-size:clamp(28px,3.4vw,42px); line-height:1.05; margin:0 0 6px; letter-spacing:-.005em }
+  .sr-sub{ color:var(--ink-dim); font-size:14px; margin:0 0 22px }
+  .sr-sub b{ color:var(--ink) }
+
+  /* OFFERS STRIP */
+  .offers{ display:flex; gap:14px; overflow-x:auto; padding-bottom:6px; margin-bottom:26px; scrollbar-width:thin }
+  .offers::-webkit-scrollbar{ height:6px }
+  .offers::-webkit-scrollbar-thumb{ background:var(--line-strong); border-radius:999px }
+  .offer{
+    flex:0 0 auto; width:300px; display:flex; gap:14px; align-items:center;
+    padding:16px 18px; border-radius:16px;
+    background:rgba(248,250,252,.04); border:1px solid var(--line-strong);
+    transition: border-color .2s, transform .2s;
+  }
+  .offer:hover{ border-color:var(--gold); transform:translateY(-2px) }
+  .offer-ico{ width:44px; height:44px; border-radius:11px; flex-shrink:0; display:grid; place-items:center; background:linear-gradient(180deg, rgba(201,166,107,.18), rgba(201,166,107,.05)); border:1px solid rgba(201,166,107,.28); color:var(--gold-2) }
+  .offer-ico svg{ width:20px; height:20px }
+  .offer .t{ font-size:13.5px; font-weight:600 }
+  .offer .s{ font-size:12px; color:var(--ink-mute); margin-top:2px; line-height:1.4 }
+
+  /* SORT BAR */
+  .sortbar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:14px 18px; border-radius:14px; margin-bottom:18px;
+    background:rgba(248,250,252,.03); border:1px solid var(--line); flex-wrap:wrap;
+  }
+  .sortbar .rc{ font-size:13.5px; color:var(--ink-dim) }
+  .sortbar .rc b{ color:var(--ink) }
+  .sortopts{ display:flex; gap:8px; align-items:center }
+  .sortopts .sl{ font-size:12px; color:var(--ink-mute); letter-spacing:.04em; margin-right:4px }
+  .sortbtn{
+    padding:8px 14px; border-radius:999px; font-size:12.5px; font-weight:500; color:var(--ink-dim);
+    border:1px solid var(--line-strong); background:transparent; transition: background .2s, color .2s, border-color .2s;
+  }
+  .sortbtn:hover{ color:var(--ink); border-color:var(--gold) }
+  .sortbtn.on{ background:rgba(201,166,107,.12); border-color:var(--gold); color:var(--gold-2); font-weight:600 }
+
+  /* RESULT CARD */
+  .res-list{ display:flex; flex-direction:column; gap:18px }
+  .res{
+    display:grid; grid-template-columns: 280px 1fr; gap:0;
+    background:var(--charcoal); border:1px solid var(--line); border-radius:20px; overflow:hidden;
+    box-shadow: var(--shadow-1); transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s;
+  }
+  .res:hover{ transform:translateY(-4px); border-color:var(--line-strong) }
+  .res.hide{ display:none }
+  .res-img{ position:relative; overflow:hidden }
+  .res-img img{ width:100%; height:100%; object-fit:cover; transition:transform .8s }
+  .res:hover .res-img img{ transform:scale(1.05) }
+  .res-tag{
+    position:absolute; top:14px; left:14px;
+    background:rgba(11,17,32,.7); backdrop-filter:blur(10px); border:1px solid var(--line-strong);
+    border-radius:999px; padding:6px 11px; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-2); font-weight:600;
+  }
+  .res-body{ display:grid; grid-template-columns: 1fr auto; gap:20px; padding:22px 24px }
+  .res-loc{ font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); display:flex; align-items:center; gap:7px }
+  .res-loc svg{ width:11px; height:11px }
+  .res-name{ font-family:"Italiana", serif; font-size:26px; line-height:1.1; margin:8px 0 12px; letter-spacing:-.005em }
+  .res-stars{ display:inline-flex; gap:2px; color:var(--gold); margin-left:8px; vertical-align:middle }
+  .res-stars svg{ width:13px; height:13px; fill:currentColor }
+  .res-amen{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px }
+  .res-amen span{ font-size:11.5px; color:var(--ink-dim); padding:5px 11px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid var(--line) }
+  .res-rev{ font-size:13px; color:var(--ink-dim); display:flex; align-items:center; gap:8px }
+  .res-rev .badge{ background:var(--gold); color:#1a1206; font-weight:700; font-size:12.5px; padding:4px 9px; border-radius:7px }
+  .res-right{ display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between; text-align:right; border-left:1px solid var(--line); padding-left:20px; min-width:170px }
+  .res-price .from{ font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute) }
+  .res-price .amt{ font-family:"Italiana", serif; font-size:30px; line-height:1.05; margin-top:3px }
+  .res-price .per{ font-size:11.5px; color:var(--ink-mute); margin-top:3px }
+  .res-cta{
+    display:inline-flex; align-items:center; gap:8px; margin-top:14px;
+    padding:12px 18px; border-radius:11px;
+    background:linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%); color:#1a1206;
+    font-weight:700; font-size:13px; letter-spacing:.01em;
+    box-shadow: 0 10px 24px -10px rgba(201,166,107,.6); transition:transform .2s;
+  }
+  .res-cta:hover{ transform:translateY(-1px) }
+  .res-cta svg{ width:13px; height:13px }
+  @media (max-width: 680px){
+    .res{ grid-template-columns:1fr }
+    .res-img{ height:200px }
+    .res-body{ grid-template-columns:1fr }
+    .res-right{ border-left:0; border-top:1px solid var(--line); padding-left:0; padding-top:16px; align-items:flex-start; text-align:left; flex-direction:row; justify-content:space-between; width:100% }
+    .res-cta{ margin-top:0 }
+  }
+  .no-res{ display:none; text-align:center; color:var(--ink-mute); padding:70px 0; font-size:15px }
+
+  /* FOOTER */
+  .foot-contact{ display:flex; gap:28px; flex-wrap:wrap; padding-bottom:22px; margin-bottom:22px; border-bottom:1px solid var(--line) }
+  .foot-contact a{ display:inline-flex; align-items:center; gap:9px; color:var(--ink-dim); font-size:13.5px; font-weight:500; transition:color .2s }
+  .foot-contact a:hover{ color:var(--gold-2) }
+  .foot-contact svg{ width:15px; height:15px; color:var(--gold); flex-shrink:0 }
+  footer{ background:#070A14; border-top:1px solid var(--line); padding: 48px 0 32px }
+  .foot-bot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px }
+  .foot-bot p{ color:var(--ink-mute); font-size:12.5px; margin:0 }
+  .foot-bot .legal{ display:flex; gap:24px; color:var(--ink-mute); font-size:12.5px }
+  .foot-bot .legal a:hover{ color:var(--ink) }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="brand" href="Alarion Landing.html">
+    <img class="brand-logo" src="assets/alarion-logo.png" alt="Alarion" />
+  </a>
+  <div class="nav-links">
+    <a href="Alarion Landing.html#hotels">Hotels</a>
+    <a href="Destinations.html">Destinations</a>
+    <a href="Experiences.html">Experiences</a>
+    <a href="Guide.html">Guide</a>
+    <a href="Why-Alarion.html">Why Alarion</a>
+    <a href="Alarion Landing.html#test">Reviews</a>
+  </div>
+  <div class="nav-actions">
+    <a class="nav-list" href="List Your Hotel.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+      List your place
+    </a>
+    <a class="nav-cta" href="Auth.html">
+      Sign In
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Search summary bar -->
+  <div class="sr-bar">
+    <form class="sr-summary" id="sr-form" autocomplete="off">
+      <div class="sr-fld">
+        <div class="l">Destination</div>
+        <input class="v" id="s-dest" value="Udaipur, Rajasthan" />
+      </div>
+      <div class="sr-fld">
+        <div class="l">Check-in</div>
+        <div class="v" id="s-in">Fri, 12 Jun</div>
+      </div>
+      <div class="sr-fld">
+        <div class="l">Check-out</div>
+        <div class="v" id="s-out">Sun, 14 Jun</div>
+      </div>
+      <div class="sr-fld">
+        <div class="l">Guests</div>
+        <div class="v" id="s-guests">2 Adults · 1 Room</div>
+      </div>
+      <button class="sr-go" type="submit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span id="s-go-label">Modify</span>
+      </button>
+    </form>
+
+    <!-- Quick filter chips -->
+    <div class="sr-quick" id="quick-row">
+      <span class="ql">Quick filters:</span>
+      <button type="button" class="qchip" data-amen="Free cancellation">Free cancellation</button>
+      <button type="button" class="qchip" data-amen="Breakfast">Breakfast included</button>
+      <button type="button" class="qchip" data-amen="Pool">Pool</button>
+      <button type="button" class="qchip" data-amen="Spa">Spa</button>
+      <button type="button" class="qchip" data-amen="Lake view">Lake view</button>
+    </div>
+  </div>
+
+  <!-- Layout -->
+  <div class="sr-layout">
+
+    <!-- FILTERS -->
+    <aside class="sr-aside">
+      <div class="fbox">
+        <h4>Applied Filters <button id="clear-all">Clear all</button></h4>
+        <div class="applied" id="applied"><span class="none">No filters applied</span></div>
+      </div>
+
+      <div class="fbox">
+        <h4>Max Price / night</h4>
+        <div class="price-val">Up to <span id="price-out">₹90,000</span></div>
+        <input type="range" class="slider" id="price" min="20000" max="90000" step="2000" value="90000" />
+        <div class="price-ends"><span>₹20,000</span><span>₹90,000</span></div>
+      </div>
+
+      <div class="fbox">
+        <h4>Star Rating</h4>
+        <div class="frow" data-filter="stars" data-val="5">
+          <div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="stars-inline"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span>
+          </div>
+          <span class="cnt">5</span>
+        </div>
+        <div class="frow" data-filter="stars" data-val="4">
+          <div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span class="stars-inline"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span>
+          </div>
+          <span class="cnt">1</span>
+        </div>
+      </div>
+
+      <div class="fbox">
+        <h4>Amenities</h4>
+        <div class="frow" data-filter="amen" data-val="Pool"><div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Pool</div></div>
+        <div class="frow" data-filter="amen" data-val="Spa"><div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Spa</div></div>
+        <div class="frow" data-filter="amen" data-val="Lake view"><div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Lake view</div></div>
+        <div class="frow" data-filter="amen" data-val="Beachfront"><div class="check"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>Beachfront</div></div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+      <h1 class="sr-title" id="results-title">Stays in Udaipur</h1>
+      <p class="sr-sub"><b id="stay-range">Fri, 12 Jun — Sun, 14 Jun</b> · <span id="stay-guests">2 guests, 1 room</span> · 2 nights</p>
+
+      <!-- Offers -->
+      <div class="offers">
+        <div class="offer">
+          <span class="offer-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M21 12c0 5-9 10-9 10S3 17 3 12V5l9-3 9 3v7z"/></svg></span>
+          <div><div class="t">Price Drop Protection</div><div class="s">We refund the difference if the rate falls.</div></div>
+        </div>
+        <div class="offer">
+          <span class="offer-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+          <div><div class="t">Bank Offer · 10% off</div><div class="s">Instant discount on HDFC credit cards.</div></div>
+        </div>
+        <div class="offer">
+          <span class="offer-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1-6.3-4.6L5.7 21l2.3-7.1-6-4.5h7.6z"/></svg></span>
+          <div><div class="t">Alarion Club · Extra night</div><div class="s">Stay 3 nights, the 4th is on us.</div></div>
+        </div>
+        <div class="offer">
+          <span class="offer-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></span>
+          <div><div class="t">24/7 Concierge</div><div class="s">A real human plans every detail.</div></div>
+        </div>
+      </div>
+
+      <!-- Sort bar -->
+      <div class="sortbar">
+        <div class="rc"><b id="res-count">6</b> properties found</div>
+        <div class="sortopts">
+          <span class="sl">Sort</span>
+          <button class="sortbtn on" data-sort="recommended">Recommended</button>
+          <button class="sortbtn" data-sort="price">Price ↑</button>
+          <button class="sortbtn" data-sort="rating">Rating</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="res-list" id="res-list">
+
+        <article class="res" data-stars="5" data-price="62000" data-rating="4.96" data-amen="Pool,Spa,Lake view,Free cancellation,Breakfast">
+          <div class="res-img"><span class="res-tag">Signature</span><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80&auto=format&fit=crop" alt="The Oberoi Udaivilās"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Udaipur, Rajasthan</div>
+              <div class="res-name">The Oberoi Udaivilās<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Pool</span><span>Spa</span><span>Lake view</span><span>Free cancellation</span></div>
+              <div class="res-rev"><span class="badge">4.96</span> Exceptional · 2,184 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹62,000</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="res" data-stars="5" data-price="54000" data-rating="4.89" data-amen="Lake view,Spa,Free cancellation,Breakfast">
+          <div class="res-img"><span class="res-tag">Iconic</span><img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=900&q=80&auto=format&fit=crop" alt="Taj Lake Palace"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Udaipur, Rajasthan</div>
+              <div class="res-name">Taj Lake Palace<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Lake view</span><span>Spa</span><span>Heritage</span><span>Free cancellation</span></div>
+              <div class="res-rev"><span class="badge">4.89</span> Exceptional · 1,902 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹54,000</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="res" data-stars="5" data-price="48000" data-rating="4.92" data-amen="Pool,Spa,Free cancellation">
+          <div class="res-img"><span class="res-tag">Wellness</span><img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=900&q=80&auto=format&fit=crop" alt="Amanbagh Retreat"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Alwar, Rajasthan</div>
+              <div class="res-name">Amanbagh Retreat<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Pool</span><span>Spa</span><span>Wellness</span><span>Free cancellation</span></div>
+              <div class="res-rev"><span class="badge">4.92</span> Exceptional · 1,140 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹48,000</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="res" data-stars="5" data-price="78500" data-rating="4.89" data-amen="Pool,Spa,Breakfast">
+          <div class="res-img"><span class="res-tag">Heritage</span><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80&auto=format&fit=crop" alt="Rambagh Palace"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Jaipur, Rajasthan</div>
+              <div class="res-name">Rambagh Palace<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Pool</span><span>Spa</span><span>Butler</span><span>Heritage</span></div>
+              <div class="res-rev"><span class="badge">4.89</span> Exceptional · 2,640 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹78,500</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="res" data-stars="5" data-price="34000" data-rating="4.85" data-amen="Spa,Pool,Free cancellation,Breakfast">
+          <div class="res-img"><span class="res-tag">Backwaters</span><img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=900&q=80&auto=format&fit=crop" alt="The Leela Backwaters"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Alleppey, Kerala</div>
+              <div class="res-name">The Leela Backwaters<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Backwaters</span><span>Spa</span><span>Pool</span><span>Free cancellation</span></div>
+              <div class="res-rev"><span class="badge">4.85</span> Exceptional · 980 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹34,000</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+        <article class="res" data-stars="4" data-price="22000" data-rating="4.78" data-amen="Beachfront,Pool,Breakfast">
+          <div class="res-img"><span class="res-tag">Beachfront</span><img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=900&q=80&auto=format&fit=crop" alt="Casa Atrévete"/></div>
+          <div class="res-body">
+            <div>
+              <div class="res-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>Anjuna, Goa</div>
+              <div class="res-name">Casa Atrévete<span class="res-stars"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg></span></div>
+              <div class="res-amen"><span>Beachfront</span><span>Pool</span><span>Breakfast</span></div>
+              <div class="res-rev"><span class="badge">4.78</span> Excellent · 612 reviews</div>
+            </div>
+            <div class="res-right">
+              <div class="res-price"><div class="from">From</div><div class="amt">₹22,000</div><div class="per">per night · incl. taxes</div></div>
+              <a class="res-cta" href="Property.html">View Property<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg></a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+      <div class="no-res" id="no-res">No properties match these filters. Try widening your search.</div>
+    </main>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-contact">
+      <a href="mailto:concierge@alarion.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>concierge@alarion.com</a>
+      <a href="tel:+911247160000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>+91 124 716 0000</a>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Alarion Hospitality Pvt. Ltd. — Gurgaon, India.</p>
+      <div class="legal">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a><a href="#">Legal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    /* ---- Read URL params to populate summary ---- */
+    var p = new URLSearchParams(location.search);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    function fmt(iso){ if(!iso) return null; var d=new Date(iso); if(isNaN(d)) return null; return dows[d.getDay()]+', '+d.getDate()+' '+months[d.getMonth()]; }
+    var dest = p.get('dest'); if(dest){ document.getElementById('s-dest').value = dest; }
+    var inF = fmt(p.get('in')), outF = fmt(p.get('out'));
+    if(inF) document.getElementById('s-in').textContent = inF;
+    if(outF) document.getElementById('s-out').textContent = outF;
+    var adults = +(p.get('adults')||2), children = +(p.get('children')||0), rooms = +(p.get('rooms')||1);
+    if(p.get('adults')){
+      var gtxt = adults+' Adult'+(adults!==1?'s':'')+(children?(' · '+children+' Child'+(children!==1?'ren':'')):'')+' · '+rooms+' Room'+(rooms!==1?'s':'');
+      document.getElementById('s-guests').textContent = gtxt;
+    }
+    /* title + subline */
+    var city = (document.getElementById('s-dest').value||'Udaipur').split(',')[0].trim();
+    document.getElementById('results-title').textContent = 'Stays in '+city;
+    if(inF && outF) document.getElementById('stay-range').textContent = inF+' — '+outF;
+    var totalGuests = adults+children;
+    document.getElementById('stay-guests').textContent = totalGuests+' guest'+(totalGuests!==1?'s':'')+', '+rooms+' room'+(rooms!==1?'s':'');
+
+    /* ---- Filtering + sorting ---- */
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.res'));
+    var state = { maxPrice: 90000, stars: [], amen: [], sort: 'recommended' };
+
+    var priceSlider = document.getElementById('price');
+    var priceOut = document.getElementById('price-out');
+    function fmtPrice(n){ return '₹'+n.toLocaleString('en-IN'); }
+    function updSlider(){
+      var pct = (priceSlider.value - priceSlider.min) / (priceSlider.max - priceSlider.min) * 100;
+      priceSlider.style.setProperty('--fill', pct+'%');
+    }
+    priceSlider.addEventListener('input', function(){
+      state.maxPrice = +priceSlider.value;
+      priceOut.textContent = (+priceSlider.value >= 90000 ? '₹90,000' : fmtPrice(+priceSlider.value));
+      updSlider(); apply();
+    });
+    updSlider();
+
+    /* checkbox rows */
+    document.querySelectorAll('.frow[data-filter]').forEach(function(row){
+      if(!row.querySelector('.box')) return;
+      row.addEventListener('click', function(){
+        row.classList.toggle('on');
+        var f = row.dataset.filter, v = row.dataset.val;
+        var arr = state[f];
+        var i = arr.indexOf(v);
+        if(row.classList.contains('on')){ if(i<0) arr.push(v); } else { if(i>=0) arr.splice(i,1); }
+        syncQuick(); apply();
+      });
+    });
+
+    /* quick chips (amenities) */
+    document.querySelectorAll('.qchip').forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var v = chip.dataset.amen;
+        var i = state.amen.indexOf(v);
+        if(i<0){ state.amen.push(v); chip.classList.add('on'); }
+        else { state.amen.splice(i,1); chip.classList.remove('on'); }
+        syncRows(); apply();
+      });
+    });
+    function syncQuick(){
+      document.querySelectorAll('.qchip').forEach(function(chip){
+        chip.classList.toggle('on', state.amen.indexOf(chip.dataset.amen) >= 0);
+      });
+    }
+    function syncRows(){
+      document.querySelectorAll('.frow[data-filter="amen"]').forEach(function(row){
+        if(!row.querySelector('.box')) return;
+        row.classList.toggle('on', state.amen.indexOf(row.dataset.val) >= 0);
+      });
+    }
+
+    /* sort */
+    document.querySelectorAll('.sortbtn').forEach(function(b){
+      b.addEventListener('click', function(){
+        document.querySelectorAll('.sortbtn').forEach(function(x){ x.classList.remove('on'); });
+        b.classList.add('on'); state.sort = b.dataset.sort; apply();
+      });
+    });
+
+    /* applied filters chips */
+    function renderApplied(){
+      var box = document.getElementById('applied');
+      var items = [];
+      if(state.maxPrice < 90000) items.push({label:'Under '+fmtPrice(state.maxPrice), type:'price'});
+      state.stars.forEach(function(s){ items.push({label:s+'★', type:'stars', val:s}); });
+      state.amen.forEach(function(a){ items.push({label:a, type:'amen', val:a}); });
+      if(!items.length){ box.innerHTML = '<span class="none">No filters applied</span>'; return; }
+      box.innerHTML = '';
+      items.forEach(function(it){
+        var el = document.createElement('span'); el.className='apill';
+        el.innerHTML = it.label + '<button aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>';
+        el.querySelector('button').addEventListener('click', function(){
+          if(it.type==='price'){ state.maxPrice=90000; priceSlider.value=90000; priceOut.textContent='₹90,000'; updSlider(); }
+          else { var arr=state[it.type]; var i=arr.indexOf(it.val); if(i>=0) arr.splice(i,1); }
+          syncQuick(); syncRows(); syncStarRows(); apply();
+        });
+        box.appendChild(el);
+      });
+    }
+    function syncStarRows(){
+      document.querySelectorAll('.frow[data-filter="stars"]').forEach(function(row){
+        row.classList.toggle('on', state.stars.indexOf(row.dataset.val) >= 0);
+      });
+    }
+
+    document.getElementById('clear-all').addEventListener('click', function(){
+      state = { maxPrice:90000, stars:[], amen:[], sort: state.sort };
+      priceSlider.value=90000; priceOut.textContent='₹90,000'; updSlider();
+      document.querySelectorAll('.frow.on').forEach(function(r){ r.classList.remove('on'); });
+      document.querySelectorAll('.qchip.on').forEach(function(c){ c.classList.remove('on'); });
+      apply();
+    });
+
+    function apply(){
+      var list = document.getElementById('res-list');
+      var visible = cards.filter(function(c){
+        var okPrice = +c.dataset.price <= state.maxPrice;
+        var okStars = !state.stars.length || state.stars.indexOf(c.dataset.stars) >= 0;
+        var amens = c.dataset.amen.split(',');
+        var okAmen = state.amen.every(function(a){ return amens.indexOf(a) >= 0; });
+        return okPrice && okStars && okAmen;
+      });
+      cards.forEach(function(c){ c.classList.add('hide'); });
+      var sorted = visible.slice();
+      if(state.sort==='price') sorted.sort(function(a,b){ return +a.dataset.price - +b.dataset.price; });
+      else if(state.sort==='rating') sorted.sort(function(a,b){ return +b.dataset.rating - +a.dataset.rating; });
+      sorted.forEach(function(c){ c.classList.remove('hide'); list.appendChild(c); });
+      document.getElementById('res-count').textContent = visible.length;
+      document.getElementById('no-res').style.display = visible.length ? 'none' : 'block';
+      renderApplied();
+    }
+
+    /* modify search → back to landing */
+    document.getElementById('sr-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var lab = document.getElementById('s-go-label'); lab.textContent='Updating…';
+      setTimeout(function(){ window.location.href='Alarion Landing.html#book'; }, 500);
+    });
+
+    apply();
+  })();
+</script>
+
+</body>
+</html>

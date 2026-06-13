@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Oberoi Udaivilās — Alarion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#0B1120; --navy-2:#0E1426; --charcoal:#111827;
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
+    --ink:#F8FAFC; --ink-dim:#B7BECC; --ink-mute:#7A8295;
+    --gold:#C9A66B; --gold-2:#E7C68A;
+    --emerald:#10B981; --royal:#2563EB;
+    --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px rgba(0,0,0,.35);
+    --shadow-2: 0 20px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.04) inset;
+    --shadow-card: 0 30px 80px -20px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--navy); color:var(--ink);
+    font-family:"Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block}
+  a{color:inherit; text-decoration:none}
+  button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  .container{max-width:1280px; margin:0 auto; padding:0 28px}
+  .serif{font-family:"Italiana", "Cormorant Garamond", serif}
+  .eyebrow{
+    font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--gold); font-weight:500;
+    display:inline-flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); opacity:.7}
+
+  /* NAV */
+  .nav{
+    position:fixed; top:18px; left:50%; transform:translateX(-50%);
+    width:min(1280px, calc(100% - 32px));
+    z-index:60;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 22px;
+    background:rgba(11,17,32,.78);
+    border:1px solid var(--line-strong);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-radius:999px;
+    box-shadow: var(--shadow-1);
+  }
+  .brand{display:flex; align-items:center; gap:12px; font-weight:600}
+  .brand-logo{ height:48px; width:auto; display:block; filter: brightness(1.05) }
+  .nav .brand{ margin: -6px 0 }
+  .nav-links{display:flex; gap:26px; font-size:13.5px; color:var(--ink-dim); font-weight:500}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-actions{ display:flex; align-items:center; gap:16px }
+  .nav-list{ display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:var(--gold-2); transition:color .2s }
+  .nav-list:hover{ color:var(--gold) }
+  .nav-list svg{ width:14px; height:14px }
+  @media (max-width: 620px){ .nav-list{display:none} }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px;
+    background:var(--ink); color:var(--navy);
+    font-weight:600; font-size:13px;
+    transition:background .2s, transform .2s;
+  }
+  .nav-cta:hover{background:var(--gold-2); transform:translateY(-1px)}
+  .nav-cta svg{width:14px; height:14px}
+  @media (max-width: 920px){ .nav-links{display:none} }
+
+  /* BREADCRUMB */
+  .crumb{
+    padding: 130px 0 24px;
+    font-size:13px; color:var(--ink-mute); letter-spacing:.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .crumb a:hover{color:var(--ink)}
+  .crumb .sep{ opacity:.4 }
+  .crumb .curr{ color:var(--ink-dim) }
+
+  /* PROPERTY HEADER */
+  .p-head{
+    display:flex; align-items:end; justify-content:space-between; gap:32px;
+    padding-bottom: 28px;
+    flex-wrap:wrap;
+  }
+  .p-head-left .badges{
+    display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;
+  }
+  .badge{
+    padding:6px 12px; border-radius:999px;
+    background:rgba(201,166,107,.12); color:var(--gold-2);
+    border:1px solid rgba(201,166,107,.28);
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  }
+  .badge.secondary{
+    background:rgba(248,250,252,.05); color:var(--ink-dim);
+    border-color:var(--line-strong);
+  }
+  .p-head h1{
+    font-family:"Italiana", serif; font-weight:400;
+    font-size: clamp(40px, 5.5vw, 76px); line-height:1; letter-spacing:-.005em;
+    margin: 0 0 18px;
+  }
+  .p-meta{
+    display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+    color:var(--ink-dim); font-size:14px;
+  }
+  .p-meta .item{display:flex; align-items:center; gap:8px}
+  .p-meta svg{width:14px; height:14px; opacity:.85}
+  .p-meta .rating{color:var(--ink)}
+  .p-meta .rating svg{fill:var(--gold); opacity:1}
+  .p-actions{ display:flex; gap:10px }
+  .icon-btn{
+    width:42px; height:42px; border-radius:50%;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    display:grid; place-items:center;
+    transition: background .2s, border-color .2s;
+  }
+  .icon-btn:hover{background:rgba(255,255,255,.08); border-color:var(--gold)}
+  .icon-btn svg{width:16px; height:16px}
+
+  /* GALLERY */
+  .gallery{
+    display:grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 240px 240px;
+    gap:8px;
+    border-radius:24px; overflow:hidden;
+    margin-bottom: 72px;
+    position:relative;
+  }
+  .g-item{
+    position:relative; overflow:hidden;
+    background:#222;
+  }
+  .g-item img{ width:100%; height:100%; object-fit:cover; transition: transform .8s }
+  .g-item:hover img{transform: scale(1.04)}
+  .g-main{ grid-row: 1/3; }
+  .g-more{
+    position:absolute; bottom:18px; right:18px;
+    padding:10px 16px; border-radius:10px;
+    background:rgba(11,17,32,.78); backdrop-filter: blur(10px);
+    border:1px solid var(--line-strong);
+    font-size:12.5px; font-weight:600; letter-spacing:.02em;
+    display:inline-flex; align-items:center; gap:8px; z-index:2;
+  }
+  .g-more svg{width:13px; height:13px}
+  @media (max-width: 800px){
+    .gallery{ grid-template-columns: 1fr 1fr; grid-template-rows: 240px 180px }
+    .g-main{ grid-column: 1/3; grid-row: auto }
+  }
+
+  /* BODY GRID */
+  .body{
+    display:grid; grid-template-columns: 1fr 380px; gap:60px;
+    padding-bottom: 120px;
+    align-items: start;
+  }
+  @media (max-width: 1000px){ .body{ grid-template-columns: 1fr } }
+
+  /* MAIN COL */
+  .section{
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .section:first-child{ padding-top:0 }
+  .section h2{
+    font-family:"Italiana", serif; font-weight:400;
+    font-size: clamp(28px, 3.2vw, 40px); line-height:1.05;
+    margin: 0 0 22px;
+  }
+  .section p{ color:var(--ink-dim); font-size:15.5px; line-height:1.7; margin:0 0 14px }
+
+  /* Host strip */
+  .host{
+    display:flex; align-items:center; gap:18px;
+    padding:20px 0 32px;
+  }
+  .host-img{
+    width:64px; height:64px; border-radius:50%;
+    background-size:cover; background-position:center;
+    border:1px solid var(--line-strong);
+  }
+  .host-name{font-size:16px; font-weight:600}
+  .host-meta{font-size:12.5px; color:var(--ink-mute); letter-spacing:.04em; margin-top:3px}
+
+  /* Highlights row */
+  .highlights{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:1px;
+    background:var(--line);
+    border:1px solid var(--line); border-radius:18px; overflow:hidden;
+    margin: 18px 0 8px;
+  }
+  .hl{ background:var(--navy); padding:22px 22px }
+  .hl-ico{
+    width:34px; height:34px; border-radius:9px;
+    background: linear-gradient(180deg, rgba(201,166,107,.18) 0%, rgba(201,166,107,.06) 100%);
+    border:1px solid rgba(201,166,107,.28);
+    display:grid; place-items:center; color:var(--gold-2);
+    margin-bottom: 14px;
+  }
+  .hl-ico svg{width:16px; height:16px}
+  .hl-title{font-size:14.5px; font-weight:600; margin-bottom:4px}
+  .hl-body{font-size:12.5px; color:var(--ink-mute); line-height:1.5}
+  @media (max-width: 700px){ .highlights{ grid-template-columns: 1fr } }
+
+  /* Rooms */
+  .rooms{ display:flex; flex-direction:column; gap:16px; margin-top:8px }
+  .room{
+    display:grid; grid-template-columns: 220px 1fr auto; gap:22px;
+    background: rgba(248,250,252,.03);
+    border:1px solid var(--line);
+    border-radius: 18px; padding:14px;
+    align-items:center;
+    transition: border-color .2s;
+  }
+  .room:hover{ border-color:var(--line-strong) }
+  .room-img{
+    aspect-ratio: 4/3; border-radius:12px; overflow:hidden;
+    background-size:cover; background-position:center;
+  }
+  .room-body .name{
+    font-family:"Italiana", serif; font-size:24px; line-height:1.1; margin:0 0 6px;
+  }
+  .room-body .desc{ font-size:13.5px; color:var(--ink-dim); line-height:1.5; margin:0 0 12px }
+  .room-tags{ display:flex; flex-wrap:wrap; gap:8px }
+  .room-tag{
+    font-size:11px; padding:5px 10px; border-radius:999px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    color:var(--ink-dim); letter-spacing:.02em;
+  }
+  .room-price{ text-align:right }
+  .room-price .lab{ font-size:10.5px; color:var(--ink-mute); letter-spacing:.14em; text-transform:uppercase }
+  .room-price .amt{ font-family:"Italiana", serif; font-size:28px; color:var(--ink); line-height:1.1; margin:4px 0 12px }
+  .room-price .amt span{ font-family:"Manrope", sans-serif; font-size:12px; color:var(--ink-mute); font-weight:500 }
+  .room-price button{
+    padding:10px 16px; border-radius:10px;
+    background:rgba(255,255,255,.06); border:1px solid var(--line-strong);
+    font-size:12.5px; font-weight:600;
+    transition: background .2s, color .2s, border-color .2s;
+  }
+  .room-price button:hover{ background:var(--gold); color:var(--navy); border-color:var(--gold) }
+  @media (max-width: 700px){
+    .room{ grid-template-columns: 1fr; }
+    .room-price{ text-align:left; display:flex; justify-content:space-between; align-items:center }
+    .room-price .amt{ margin:4px 0 0 }
+  }
+
+  /* Amenities */
+  .amen-grid{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:14px 26px;
+    margin-top:18px;
+  }
+  .amen{
+    display:flex; align-items:center; gap:14px;
+    padding:12px 0; border-bottom:1px solid var(--line);
+    color:var(--ink-dim); font-size:14px;
+  }
+  .amen-ico{
+    width:34px; height:34px; border-radius:9px;
+    background:rgba(248,250,252,.04); border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--ink-dim);
+    flex-shrink:0;
+  }
+  .amen-ico svg{width:16px; height:16px}
+  @media (max-width: 800px){ .amen-grid{ grid-template-columns: 1fr 1fr } }
+  @media (max-width: 500px){ .amen-grid{ grid-template-columns: 1fr } }
+  .amen-more{
+    display:inline-flex; align-items:center; gap:8px; margin-top: 22px;
+    padding:11px 18px; border-radius:10px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    font-size:13px; font-weight:600;
+    transition: background .2s, border-color .2s;
+  }
+  .amen-more:hover{ background:rgba(255,255,255,.08); border-color:var(--gold) }
+  .amen-more svg{width:13px; height:13px}
+
+  /* Location */
+  .location{ display:grid; grid-template-columns: 1fr 1fr; gap:32px; margin-top:18px }
+  .map{
+    aspect-ratio: 4/3; border-radius:18px; overflow:hidden;
+    border:1px solid var(--line-strong);
+    background:
+      linear-gradient(180deg, rgba(11,17,32,.3) 0%, rgba(11,17,32,.7) 100%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect fill='%230E1426' width='400' height='300'/><g stroke='%231a2236' stroke-width='1' fill='none'><path d='M0 80 Q100 60 200 90 T400 75'/><path d='M0 150 Q150 130 250 160 T400 140'/><path d='M0 220 Q120 200 220 230 T400 215'/><path d='M80 0 Q90 100 70 200 T100 300'/><path d='M180 0 Q190 100 170 200 T200 300'/><path d='M280 0 Q290 100 270 200 T300 300'/></g><circle cx='200' cy='150' r='8' fill='%23C9A66B'/><circle cx='200' cy='150' r='16' fill='none' stroke='%23C9A66B' stroke-opacity='0.4'/></svg>") center/cover no-repeat;
+    position:relative;
+  }
+  .map .pin{
+    position:absolute; bottom:18px; left:18px;
+    background:rgba(11,17,32,.85); backdrop-filter:blur(12px);
+    border:1px solid var(--line-strong); border-radius:12px;
+    padding:12px 16px; font-size:13px;
+  }
+  .map .pin .lab{font-size:10.5px; color:var(--gold-2); letter-spacing:.16em; text-transform:uppercase; margin-bottom:4px}
+  .loc-list{ display:flex; flex-direction:column; gap:18px }
+  .loc-item{
+    display:flex; align-items:start; gap:14px;
+    padding-bottom:18px; border-bottom:1px solid var(--line);
+  }
+  .loc-item:last-child{ border-bottom:0 }
+  .loc-ico{
+    width:36px; height:36px; border-radius:10px;
+    background: rgba(201,166,107,.12); border:1px solid rgba(201,166,107,.28);
+    color:var(--gold-2); display:grid; place-items:center; flex-shrink:0;
+  }
+  .loc-ico svg{width:16px; height:16px}
+  .loc-name{font-size:14.5px; font-weight:600}
+  .loc-meta{font-size:12.5px; color:var(--ink-mute); margin-top:3px}
+  .loc-dist{ margin-left:auto; font-size:12.5px; color:var(--ink-dim); white-space:nowrap }
+  @media (max-width: 800px){ .location{ grid-template-columns: 1fr } }
+
+  /* Reviews */
+  .rev-head{ display:flex; align-items:end; gap:32px; flex-wrap:wrap; margin: 8px 0 24px }
+  .rev-score{
+    font-family:"Italiana", serif; font-size:64px; line-height:1; letter-spacing:-.01em;
+  }
+  .rev-stars{ display:flex; gap:3px; margin-bottom:8px; color:var(--gold) }
+  .rev-stars svg{ width:14px; height:14px; fill:currentColor }
+  .rev-count{ font-size:13px; color:var(--ink-mute); letter-spacing:.04em }
+  .rev-bars{
+    flex:1; min-width:240px; display:flex; flex-direction:column; gap:8px;
+  }
+  .rev-bar{ display:grid; grid-template-columns: 90px 1fr 30px; gap:14px; align-items:center; font-size:12.5px; color:var(--ink-dim) }
+  .rev-bar .track{ height:4px; background:rgba(255,255,255,.06); border-radius:99px; overflow:hidden }
+  .rev-bar .fill{ height:100%; background:var(--gold); border-radius:99px }
+  .rev-bar .v{ text-align:right; color:var(--ink); font-weight:600 }
+
+  .rev-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:18px }
+  .rev{
+    background:rgba(248,250,252,.04);
+    border:1px solid var(--line);
+    border-radius:18px; padding:24px;
+  }
+  .rev-foot{ display:flex; align-items:center; gap:12px; margin-bottom:16px }
+  .rev-avatar{
+    width:40px; height:40px; border-radius:50%;
+    background-size:cover; background-position:center;
+    border:1px solid var(--line-strong);
+  }
+  .rev-name{ font-size:14px; font-weight:600 }
+  .rev-meta{ font-size:11.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.04em }
+  .rev-body{
+    font-family:"Italiana", serif; font-size:18px; line-height:1.4; margin:0;
+  }
+  @media (max-width: 700px){ .rev-grid{ grid-template-columns: 1fr } }
+
+  /* Policies */
+  .policy-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-top: 16px }
+  .policy{
+    background:rgba(248,250,252,.03);
+    border:1px solid var(--line);
+    border-radius:14px; padding:20px;
+  }
+  .policy .h{ font-size:11.5px; color:var(--ink-mute); letter-spacing:.16em; text-transform:uppercase; margin-bottom: 10px }
+  .policy .v{ font-size:14px; color:var(--ink-dim); line-height:1.5 }
+  @media (max-width: 700px){ .policy-grid{ grid-template-columns: 1fr } }
+
+  /* ASIDE - booking card */
+  .aside{
+    position:sticky; top:110px;
+  }
+  .booking-card{
+    background: rgba(248,250,252,.04);
+    border:1px solid var(--line-strong);
+    border-radius:22px;
+    padding:26px;
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-2);
+  }
+  .bc-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom: 22px;
+  }
+  .bc-price .lab{ font-size:11px; color:var(--ink-mute); letter-spacing:.14em; text-transform:uppercase }
+  .bc-price .amt{ font-family:"Italiana", serif; font-size:38px; line-height:1; margin-top:4px }
+  .bc-price .amt span{ font-family:"Manrope"; font-size:13px; color:var(--ink-mute); font-weight:500 }
+  .bc-rating{ display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600 }
+  .bc-rating svg{ width:13px; height:13px; fill:var(--gold) }
+
+  .bc-fields{
+    display:grid; grid-template-columns: 1fr 1fr; gap:1px;
+    background:var(--line);
+    border:1px solid var(--line-strong);
+    border-radius:12px; overflow:hidden;
+    margin-bottom: 8px;
+  }
+  .bc-field{
+    background:rgba(11,17,32,.4);
+    padding:14px 16px;
+    cursor:pointer;
+    transition: background .2s;
+  }
+  .bc-field:hover{ background:rgba(11,17,32,.7) }
+  .bc-field.full{ grid-column: 1/-1 }
+  .bc-field .l{ font-size:10.5px; color:var(--ink-mute); letter-spacing:.16em; text-transform:uppercase; font-weight:600; margin-bottom:4px }
+  .bc-field .v{ font-size:14px; font-weight:500 }
+
+  .bc-cta{
+    width:100%; padding:16px; border-radius:14px;
+    background: linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%);
+    color:#1a1206; font-weight:700; font-size:14.5px; letter-spacing:.02em;
+    margin: 18px 0 14px;
+    box-shadow: 0 12px 30px -10px rgba(201,166,107,.5), 0 0 0 1px rgba(255,255,255,.15) inset;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .bc-cta:hover{ transform:translateY(-1px); box-shadow: 0 18px 40px -10px rgba(201,166,107,.7) }
+  .bc-cta:active{ transform:translateY(0) scale(.99) }
+  .bc-note{ text-align:center; font-size:12px; color:var(--ink-mute); margin-bottom: 22px }
+
+  /* RESERVE MODAL */
+  .rsv-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(5,8,15,.72); backdrop-filter:blur(8px);
+    display:grid; place-items:center; padding:24px;
+    opacity:0; pointer-events:none; transition:opacity .28s ease;
+  }
+  .rsv-overlay.open{ opacity:1; pointer-events:auto }
+  .rsv-modal{
+    width:min(460px, 100%);
+    background:linear-gradient(180deg, var(--navy-2) 0%, #0a0f1e 100%);
+    border:1px solid var(--line-strong); border-radius:22px;
+    box-shadow:var(--shadow-2);
+    padding:30px 30px 26px; position:relative;
+    transform:translateY(16px) scale(.98); transition:transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .rsv-overlay.open .rsv-modal{ transform:translateY(0) scale(1) }
+  .rsv-close{
+    position:absolute; top:18px; right:18px;
+    width:34px; height:34px; border-radius:50%;
+    background:rgba(255,255,255,.05); border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--ink-dim);
+    transition:background .2s, color .2s;
+  }
+  .rsv-close:hover{ background:rgba(255,255,255,.1); color:var(--ink) }
+  .rsv-close svg{ width:15px; height:15px }
+  .rsv-eyebrow{ margin-bottom:12px }
+  .rsv-modal h3{ font-family:"Italiana", serif; font-weight:400; font-size:30px; line-height:1.1; margin:0 0 4px }
+  .rsv-prop{ color:var(--ink-mute); font-size:13px; margin:0 0 22px }
+  .rsv-rows{ border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:20px }
+  .rsv-row{ display:flex; justify-content:space-between; align-items:center; padding:13px 16px; font-size:13.5px }
+  .rsv-row + .rsv-row{ border-top:1px solid var(--line) }
+  .rsv-row .k{ color:var(--ink-mute); letter-spacing:.02em }
+  .rsv-row .v2{ font-weight:600; color:var(--ink) }
+  .rsv-row.tot{ background:rgba(201,166,107,.06) }
+  .rsv-row.tot .v2{ font-family:"Italiana", serif; font-size:19px; color:var(--gold-2) }
+  .rsv-confirm{
+    width:100%; padding:16px; border-radius:14px;
+    background: linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%);
+    color:#1a1206; font-weight:700; font-size:15px; letter-spacing:.01em;
+    box-shadow: 0 14px 34px -12px rgba(201,166,107,.6), 0 0 0 1px rgba(255,255,255,.15) inset;
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    transition: transform .2s;
+  }
+  .rsv-confirm:hover{ transform:translateY(-1px) }
+  .rsv-confirm:active{ transform:translateY(0) scale(.99) }
+  .rsv-confirm svg{ width:16px; height:16px }
+  .rsv-fine{ text-align:center; font-size:11.5px; color:var(--ink-mute); margin-top:14px; line-height:1.5 }
+  /* success state */
+  .rsv-success{ text-align:center; display:none; padding:8px 0 4px }
+  .rsv-modal.done .rsv-form{ display:none }
+  .rsv-modal.done .rsv-success{ display:block }
+  .rsv-check{
+    width:72px; height:72px; border-radius:50%; margin:6px auto 22px;
+    display:grid; place-items:center;
+    background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.4); color:var(--emerald);
+    animation: rsv-pop .4s cubic-bezier(.2,.9,.3,1.4);
+  }
+  .rsv-check svg{ width:34px; height:34px }
+  @keyframes rsv-pop{ from{ transform:scale(.5); opacity:0 } to{ transform:scale(1); opacity:1 } }
+  .rsv-success h3{ margin-bottom:10px }
+  .rsv-success p{ color:var(--ink-dim); font-size:14px; line-height:1.6; margin:0 auto 20px; max-width:320px }
+  .rsv-ref{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px; margin-bottom:24px;
+    background:rgba(255,255,255,.04); border:1px solid var(--line-strong);
+    font-size:13px; letter-spacing:.06em;
+  }
+  .rsv-ref b{ color:var(--gold-2); font-weight:700; letter-spacing:.1em }
+  .rsv-success .rsv-confirm{ background:rgba(255,255,255,.06); color:var(--ink); border:1px solid var(--line-strong); box-shadow:none }
+
+  .bc-summary{ border-top:1px solid var(--line); padding-top: 18px }
+  .bc-line{ display:flex; justify-content:space-between; padding:6px 0; font-size:13.5px; color:var(--ink-dim) }
+  .bc-line .v{ color:var(--ink); font-weight:500 }
+  .bc-line.total{
+    margin-top:8px; padding-top:14px; border-top:1px solid var(--line);
+    font-size:15px; color:var(--ink); font-weight:600;
+  }
+  .bc-line.total .v{ font-family:"Italiana", serif; font-size:22px; font-weight:400 }
+
+  .concierge{
+    margin-top: 18px;
+    display:flex; align-items:center; gap:14px;
+    padding:16px;
+    background: rgba(201,166,107,.06);
+    border:1px solid rgba(201,166,107,.18);
+    border-radius:14px;
+  }
+  .conc-ico{
+    width:36px; height:36px; border-radius:50%;
+    background: linear-gradient(180deg, var(--gold-2), var(--gold));
+    color:#1a1206; display:grid; place-items:center; flex-shrink:0;
+  }
+  .conc-ico svg{ width:16px; height:16px }
+  .conc-t{ font-size:13px; font-weight:600 }
+  .conc-s{ font-size:11.5px; color:var(--ink-mute); margin-top:2px; letter-spacing:.02em }
+
+  /* SIMILAR */
+  .similar{ background: var(--navy-2); padding: 100px 0 120px }
+  .similar-head{ display:flex; justify-content:space-between; align-items:end; margin-bottom: 40px; gap:24px; flex-wrap:wrap }
+  .similar-head h2{ font-family:"Italiana", serif; font-weight:400; font-size: clamp(32px, 4vw, 52px); margin:14px 0 0; line-height:1.05 }
+  .sec-link{
+    display:inline-flex; align-items:center; gap:8px; color:var(--ink);
+    border-bottom:1px solid var(--line-strong);
+    padding-bottom:6px; font-size:13px; letter-spacing:.04em; font-weight:500;
+    transition: color .2s, border-color .2s;
+  }
+  .sec-link:hover{ color:var(--gold); border-color:var(--gold) }
+  .sec-link svg{width:12px; height:12px}
+
+  .sim-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:22px }
+  .sim{
+    border-radius:18px; overflow:hidden;
+    background: var(--navy);
+    border: 1px solid var(--line);
+    transition: transform .3s, border-color .3s;
+  }
+  .sim:hover{ transform:translateY(-4px); border-color:var(--line-strong) }
+  .sim-img{ aspect-ratio: 4/3; overflow:hidden }
+  .sim-img img{ width:100%; height:100%; object-fit:cover; transition: transform .8s }
+  .sim:hover .sim-img img{ transform:scale(1.06) }
+  .sim-body{ padding:18px 20px 20px }
+  .sim-loc{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute) }
+  .sim-name{ font-family:"Italiana", serif; font-size:22px; margin:8px 0 14px; line-height:1.1 }
+  .sim-foot{ display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid var(--line) }
+  .sim-price{ font-family:"Italiana", serif; font-size:22px; color:var(--gold-2) }
+  .sim-price span{ font-family:"Manrope"; font-size:11.5px; color:var(--ink-mute); font-weight:500; margin-left:4px }
+  .sim-rate{ display:flex; align-items:center; gap:5px; font-size:12.5px; font-weight:600 }
+  .sim-rate svg{ width:12px; height:12px; fill:var(--gold) }
+  @media (max-width: 980px){ .sim-grid{ grid-template-columns: repeat(2,1fr) } }
+  @media (max-width: 700px){ .sim-grid{ grid-template-columns: 1fr } }
+
+  /* FOOTER (minimal) */
+  footer{ background:#070A14; border-top:1px solid var(--line); padding: 48px 0 32px }
+  .foot-bot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px }
+  .foot-bot p{ color:var(--ink-mute); font-size:12.5px; margin:0 }
+  .foot-bot .legal{ display:flex; gap:24px; color:var(--ink-mute); font-size:12.5px }
+  .foot-bot .legal a:hover{ color:var(--ink) }
+
+  /* MOBILE STICKY BOOK */
+  .m-book{
+    display:none;
+    position:fixed; bottom:0; left:0; right:0; z-index:50;
+    background: rgba(11,17,32,.92);
+    backdrop-filter: blur(20px);
+    border-top:1px solid var(--line-strong);
+    padding: 14px 18px;
+    align-items:center; gap:14px;
+  }
+  .m-book .p{ font-family:"Italiana", serif; font-size:24px; line-height:1 }
+  .m-book .p span{ font-family:"Manrope"; font-size:12px; color:var(--ink-mute); font-weight:500 }
+  .m-book .l{ font-size:11px; color:var(--ink-mute); letter-spacing:.14em; text-transform:uppercase; margin-top:3px }
+  .m-book button{
+    margin-left:auto;
+    padding:12px 22px; border-radius:10px;
+    background: linear-gradient(180deg, var(--gold-2), var(--gold));
+    color:#1a1206; font-weight:700; font-size:13.5px;
+  }
+  @media (max-width: 1000px){ .m-book{display:flex} body{padding-bottom:80px} }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="brand" href="Alarion Landing.html">
+    <img class="brand-logo" src="assets/alarion-logo.png" alt="Alarion" />
+  </a>
+  <div class="nav-links">
+    <a href="Alarion Landing.html#hotels">Hotels</a>
+    <a href="Destinations.html">Destinations</a>
+    <a href="Experiences.html">Experiences</a>
+    <a href="Guide.html">Guide</a>
+    <a href="Why-Alarion.html">Why Alarion</a>
+    <a href="Alarion Landing.html#test">Reviews</a>
+  </div>
+  <div class="nav-actions">
+    <a class="nav-list" href="List Your Hotel.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+      List your place
+    </a>
+    <a class="nav-cta" href="Auth.html">
+      Sign In
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Breadcrumb -->
+  <div class="crumb">
+    <a href="Alarion Landing.html">Home</a>
+    <span class="sep">/</span>
+    <a href="Alarion Landing.html#hotels">Hotels</a>
+    <span class="sep">/</span>
+    <a href="#">Udaipur</a>
+    <span class="sep">/</span>
+    <span class="curr">The Oberoi Udaivilās</span>
+  </div>
+
+  <!-- Header -->
+  <div class="p-head">
+    <div class="p-head-left">
+      <div class="badges">
+        <span class="badge">Signature</span>
+        <span class="badge secondary">Lake Pichola</span>
+        <span class="badge secondary">Heritage Suite</span>
+      </div>
+      <h1>The Oberoi Udaivilās</h1>
+      <div class="p-meta">
+        <div class="item rating">
+          <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+          4.96 <span style="color:var(--ink-mute); margin-left:4px">· 2,184 reviews</span>
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Udaipur, Rajasthan
+        </div>
+        <div class="item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          Established 2002
+        </div>
+      </div>
+    </div>
+    <div class="p-actions">
+      <button class="icon-btn" aria-label="Share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Save">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+    <!-- MAIN -->
+    <main>
+
+      <!-- Gallery -->
+      <div class="gallery">
+        <div class="g-item g-main">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1400&q=80&auto=format&fit=crop" alt="Property exterior" loading="lazy"/>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80&auto=format&fit=crop" alt="Suite interior" loading="lazy"/>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80&auto=format&fit=crop" alt="Spa" loading="lazy"/>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80&auto=format&fit=crop" alt="Lobby" loading="lazy"/>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80&auto=format&fit=crop" alt="Pool view" loading="lazy"/>
+        </div>
+        <button class="g-more">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          All 48 photos
+        </button>
+      </div>
+
+      <!-- Host strip -->
+      <div class="host">
+        <div class="host-img" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80&auto=format&fit=crop')"></div>
+        <div>
+          <div class="host-name">Hosted by Aarav Singh, General Manager</div>
+          <div class="host-meta">12 YEARS WITH OBEROI · ALARION VERIFIED · RESPONDS WITHIN 1 HOUR</div>
+        </div>
+      </div>
+
+      <!-- About -->
+      <section class="section">
+        <div class="eyebrow" style="margin-bottom:18px">About this stay</div>
+        <h2>A palace on Lake Pichola, only newer.</h2>
+        <p>Spread across 30 acres on the western banks of Lake Pichola, The Oberoi Udaivilās draws from the architectural language of Mewar — domed pavilions, frescoed courtyards, and reflective water gardens that mirror the City Palace across the lake. Half of the property's suites open directly onto private pools.</p>
+        <p>Service is unscripted — but never accidental. The team knows you by name within the hour, and remembers how you take your morning tea by the second day. It's the kind of place that defines what "luxury hospitality" means in India.</p>
+
+        <div class="highlights">
+          <div class="hl">
+            <div class="hl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"/></svg></div>
+            <div class="hl-title">Lake-facing rooms</div>
+            <div class="hl-body">All 87 suites overlook Lake Pichola and the City Palace skyline.</div>
+          </div>
+          <div class="hl">
+            <div class="hl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg></div>
+            <div class="hl-title">Private pool suites</div>
+            <div class="hl-body">44 suites with semi-private or fully private pools.</div>
+          </div>
+          <div class="hl">
+            <div class="hl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-7-7 18-3-7z"/></svg></div>
+            <div class="hl-title">Private boat transfer</div>
+            <div class="hl-body">Arrival by traditional Mewari boat from the City Palace jetty.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rooms -->
+      <section class="section">
+        <div class="eyebrow" style="margin-bottom:18px">Suites & Rooms</div>
+        <h2>Six accommodation tiers.</h2>
+
+        <div class="rooms">
+          <article class="room">
+            <div class="room-img" style="background-image:url('https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600&q=80&auto=format&fit=crop')"></div>
+            <div class="room-body">
+              <h3 class="name">Premier Room</h3>
+              <p class="desc">Garden-facing room with king bed, sit-out terrace and Mewar-inspired interiors. 56 sqm.</p>
+              <div class="room-tags">
+                <span class="room-tag">King bed</span>
+                <span class="room-tag">56 sqm</span>
+                <span class="room-tag">Garden view</span>
+                <span class="room-tag">2 guests</span>
+              </div>
+            </div>
+            <div class="room-price">
+              <div class="lab">From</div>
+              <div class="amt">₹62,000<span>/ night</span></div>
+              <button>Reserve</button>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="room-img" style="background-image:url('https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&q=80&auto=format&fit=crop')"></div>
+            <div class="room-body">
+              <h3 class="name">Luxury Suite, Lake View</h3>
+              <p class="desc">A full lake-facing suite with separate living room, private dining area, and floor-to-ceiling lake windows. 92 sqm.</p>
+              <div class="room-tags">
+                <span class="room-tag">King bed</span>
+                <span class="room-tag">92 sqm</span>
+                <span class="room-tag">Lake view</span>
+                <span class="room-tag">Living room</span>
+                <span class="room-tag">2 guests</span>
+              </div>
+            </div>
+            <div class="room-price">
+              <div class="lab">From</div>
+              <div class="amt">₹1,24,000<span>/ night</span></div>
+              <button>Reserve</button>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="room-img" style="background-image:url('https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&q=80&auto=format&fit=crop')"></div>
+            <div class="room-body">
+              <h3 class="name">Premier Suite with Private Pool</h3>
+              <p class="desc">Domed living pavilion, private temperature-controlled plunge pool and outdoor day bed overlooking the lake. 145 sqm.</p>
+              <div class="room-tags">
+                <span class="room-tag">King bed</span>
+                <span class="room-tag">145 sqm</span>
+                <span class="room-tag">Private pool</span>
+                <span class="room-tag">Butler service</span>
+                <span class="room-tag">2 guests</span>
+              </div>
+            </div>
+            <div class="room-price">
+              <div class="lab">From</div>
+              <div class="amt">₹2,48,000<span>/ night</span></div>
+              <button>Reserve</button>
+            </div>
+          </article>
+
+          <article class="room">
+            <div class="room-img" style="background-image:url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80&auto=format&fit=crop')"></div>
+            <div class="room-body">
+              <h3 class="name">Kohinoor Suite</h3>
+              <p class="desc">The estate's signature two-bedroom residence with private courtyard, infinity pool, drawing room and 24-hour butler. 410 sqm.</p>
+              <div class="room-tags">
+                <span class="room-tag">2 bedrooms</span>
+                <span class="room-tag">410 sqm</span>
+                <span class="room-tag">Infinity pool</span>
+                <span class="room-tag">24h butler</span>
+                <span class="room-tag">4 guests</span>
+              </div>
+            </div>
+            <div class="room-price">
+              <div class="lab">From</div>
+              <div class="amt">₹8,40,000<span>/ night</span></div>
+              <button>Reserve</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Amenities -->
+      <section class="section">
+        <div class="eyebrow" style="margin-bottom:18px">Amenities</div>
+        <h2>What's included.</h2>
+        <div class="amen-grid">
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg></div>Infinity pool & private plunge pools</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 1 6 2"/></svg></div>Oberoi Spa & Ayurveda centre</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2v6M12 2v8M18 2v6M4 14h16v6H4z"/></svg></div>Three signature restaurants</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></div>24/7 butler service</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-7-7 18-3-7z"/></svg></div>Private boat transfers</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M12 2v20"/></svg></div>Free Wi-Fi & smart TV</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>Yoga & meditation pavilion</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>Cultural performances nightly</div>
+          <div class="amen"><div class="amen-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5h14v14H5z"/><path d="M5 9h14"/></svg></div>Heritage walking tours</div>
+        </div>
+        <button class="amen-more">
+          Show all 42 amenities
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+      <!-- Location -->
+      <section class="section">
+        <div class="eyebrow" style="margin-bottom:18px">Location</div>
+        <h2>Haridasji Ki Magri, Udaipur.</h2>
+        <p>Set on the western banks of Lake Pichola, with private boat access to the City Palace, Jagdish Temple and the old city.</p>
+
+        <div class="location">
+          <div class="map">
+            <div class="pin">
+              <div class="lab">The Property</div>
+              <div>Haridasji Ki Magri, 313001</div>
+            </div>
+          </div>
+          <div class="loc-list">
+            <div class="loc-item">
+              <div class="loc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14"/></svg></div>
+              <div style="flex:1">
+                <div class="loc-name">City Palace</div>
+                <div class="loc-meta">Heritage site & royal residence</div>
+              </div>
+              <div class="loc-dist">2.4 km</div>
+            </div>
+            <div class="loc-item">
+              <div class="loc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+              <div style="flex:1">
+                <div class="loc-name">Jagdish Temple</div>
+                <div class="loc-meta">17th-century Vishnu temple</div>
+              </div>
+              <div class="loc-dist">3.1 km</div>
+            </div>
+            <div class="loc-item">
+              <div class="loc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 17l10-5 10 5M2 12l10-5 10 5"/></svg></div>
+              <div style="flex:1">
+                <div class="loc-name">Maharana Pratap Airport</div>
+                <div class="loc-meta">UDR · Domestic & limited intl.</div>
+              </div>
+              <div class="loc-dist">28 km</div>
+            </div>
+            <div class="loc-item">
+              <div class="loc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-7-7 18-3-7z"/></svg></div>
+              <div style="flex:1">
+                <div class="loc-name">Bagore Ki Haveli</div>
+                <div class="loc-meta">Cultural arts museum</div>
+              </div>
+              <div class="loc-dist">2.8 km</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Reviews -->
+      <section class="section">
+        <div class="eyebrow" style="margin-bottom:18px">Guest Reviews</div>
+        <h2>4.96 across 2,184 stays.</h2>
+
+        <div class="rev-head">
+          <div>
+            <div class="rev-score">4.96</div>
+            <div class="rev-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+            </div>
+            <div class="rev-count">2,184 verified reviews</div>
+          </div>
+          <div class="rev-bars">
+            <div class="rev-bar"><span>Cleanliness</span><div class="track"><div class="fill" style="width:99%"></div></div><span class="v">4.98</span></div>
+            <div class="rev-bar"><span>Service</span><div class="track"><div class="fill" style="width:99%"></div></div><span class="v">4.97</span></div>
+            <div class="rev-bar"><span>Amenities</span><div class="track"><div class="fill" style="width:97%"></div></div><span class="v">4.93</span></div>
+            <div class="rev-bar"><span>Location</span><div class="track"><div class="fill" style="width:98%"></div></div><span class="v">4.95</span></div>
+            <div class="rev-bar"><span>Value</span><div class="track"><div class="fill" style="width:93%"></div></div><span class="v">4.74</span></div>
+          </div>
+        </div>
+
+        <div class="rev-grid">
+          <article class="rev">
+            <div class="rev-foot">
+              <div class="rev-avatar" style="background-image:url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&q=80&auto=format&fit=crop')"></div>
+              <div>
+                <div class="rev-name">Ananya Krishnan</div>
+                <div class="rev-meta">MUMBAI · MAY 2026 · KOHINOOR SUITE</div>
+              </div>
+            </div>
+            <p class="rev-body">“The arrival by boat at dusk, the lights of the City Palace across the water — we kept saying, this can't be real. And then the suite. And then the food. We're already planning to return.”</p>
+          </article>
+          <article class="rev">
+            <div class="rev-foot">
+              <div class="rev-avatar" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop')"></div>
+              <div>
+                <div class="rev-name">Vikram Mehta</div>
+                <div class="rev-meta">DELHI · APR 2026 · POOL SUITE</div>
+              </div>
+            </div>
+            <p class="rev-body">“Aarav and the team made our 25th anniversary feel like the only thing happening in Udaipur. The thali at Suryamahal is worth the trip alone.”</p>
+          </article>
+          <article class="rev">
+            <div class="rev-foot">
+              <div class="rev-avatar" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&q=80&auto=format&fit=crop')"></div>
+              <div>
+                <div class="rev-name">Priya Shenoy</div>
+                <div class="rev-meta">BANGALORE · MAR 2026 · LAKE VIEW</div>
+              </div>
+            </div>
+            <p class="rev-body">“Booked through Alarion at a better rate than direct. Concierge handled airport pickup, boat transfer, and a private temple visit in Eklingji. Faultless.”</p>
+          </article>
+          <article class="rev">
+            <div class="rev-foot">
+              <div class="rev-avatar" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80&auto=format&fit=crop')"></div>
+              <div>
+                <div class="rev-name">Meera Joshi</div>
+                <div class="rev-meta">CHENNAI · FEB 2026 · PREMIER ROOM</div>
+              </div>
+            </div>
+            <p class="rev-body">“The architecture alone is worth the stay — the domed pavilions reflected in the courtyard pools at sunrise was the most beautiful thing I've seen this year.”</p>
+          </article>
+        </div>
+        <button class="amen-more" style="margin-top:24px">
+          Show all 2,184 reviews
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+        </button>
+      </section>
+
+      <!-- Policies -->
+      <section class="section" style="border-bottom:0">
+        <div class="eyebrow" style="margin-bottom:18px">House Rules & Policies</div>
+        <h2>Good to know.</h2>
+        <div class="policy-grid">
+          <div class="policy">
+            <div class="h">Check-in</div>
+            <div class="v">After 2:00 PM<br/>Early check-in on request</div>
+          </div>
+          <div class="policy">
+            <div class="h">Check-out</div>
+            <div class="v">By 12:00 PM<br/>Late check-out up to 4 PM</div>
+          </div>
+          <div class="policy">
+            <div class="h">Cancellation</div>
+            <div class="v">Free cancellation up to 72 hours before check-in</div>
+          </div>
+          <div class="policy">
+            <div class="h">Children</div>
+            <div class="v">All ages welcome. Cribs and connecting rooms available.</div>
+          </div>
+          <div class="policy">
+            <div class="h">Pets</div>
+            <div class="v">Small pets allowed on request. Pet menu available.</div>
+          </div>
+          <div class="policy">
+            <div class="h">Payment</div>
+            <div class="v">10% on booking, balance at check-in. EMI via Razorpay.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ASIDE -->
+    <aside class="aside">
+      <div class="booking-card">
+        <div class="bc-head">
+          <div class="bc-price">
+            <div class="lab">From</div>
+            <div class="amt">₹62,000<span>/ night</span></div>
+          </div>
+          <div class="bc-rating">
+            <svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>
+            4.96
+          </div>
+        </div>
+
+        <div class="bc-fields">
+          <div class="bc-field">
+            <div class="l">Check-in</div>
+            <div class="v">Fri, 12 Jun</div>
+          </div>
+          <div class="bc-field">
+            <div class="l">Check-out</div>
+            <div class="v">Sun, 14 Jun</div>
+          </div>
+          <div class="bc-field full">
+            <div class="l">Guests</div>
+            <div class="v">2 Adults · 1 Room</div>
+          </div>
+          <div class="bc-field full">
+            <div class="l">Room type</div>
+            <div class="v">Luxury Suite, Lake View</div>
+          </div>
+        </div>
+
+        <button class="bc-cta" id="reserve-btn">Reserve Suite</button>
+        <div class="bc-note">You won't be charged yet</div>
+
+        <div class="bc-summary">
+          <div class="bc-line"><span>₹1,24,000 × 2 nights</span><span class="v">₹2,48,000</span></div>
+          <div class="bc-line"><span>Service fee</span><span class="v">₹7,440</span></div>
+          <div class="bc-line"><span>Taxes (18% GST)</span><span class="v">₹45,940</span></div>
+          <div class="bc-line total"><span>Total</span><span class="v">₹3,01,380</span></div>
+        </div>
+
+        <div class="concierge">
+          <div class="conc-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          </div>
+          <div>
+            <div class="conc-t">Talk to a concierge</div>
+            <div class="conc-s">Real human · responds in &lt; 5 min</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Similar -->
+<section class="similar">
+  <div class="container">
+    <div class="similar-head">
+      <div>
+        <div class="eyebrow">You may also like</div>
+        <h2>Properties guests also viewed.</h2>
+      </div>
+      <a class="sec-link" href="Alarion Landing.html#hotels">View all 500+ stays
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="sim-grid">
+      <a class="sim" href="Property.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80&auto=format&fit=crop" alt="Rambagh Palace"/></div>
+        <div class="sim-body">
+          <div class="sim-loc">Jaipur, Rajasthan</div>
+          <div class="sim-name">Rambagh Palace</div>
+          <div class="sim-foot">
+            <div class="sim-price">₹78,500<span>/ night</span></div>
+            <div class="sim-rate"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>4.89</div>
+          </div>
+        </div>
+      </a>
+      <a class="sim" href="Property.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=800&q=80&auto=format&fit=crop" alt="Amanbagh Retreat"/></div>
+        <div class="sim-body">
+          <div class="sim-loc">Alwar, Rajasthan</div>
+          <div class="sim-name">Amanbagh Retreat</div>
+          <div class="sim-foot">
+            <div class="sim-price">₹48,000<span>/ night</span></div>
+            <div class="sim-rate"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>4.92</div>
+          </div>
+        </div>
+      </a>
+      <a class="sim" href="Property.html">
+        <div class="sim-img"><img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80&auto=format&fit=crop" alt="Casa Atrévete"/></div>
+        <div class="sim-body">
+          <div class="sim-loc">Anjuna, Goa</div>
+          <div class="sim-name">Casa Atrévete Villa</div>
+          <div class="sim-foot">
+            <div class="sim-price">₹38,200<span>/ night</span></div>
+            <div class="sim-rate"><svg viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568L24 9.423l-6 5.85L19.336 24 12 19.897 4.664 24 6 15.273 0 9.423l8.332-1.268z"/></svg>4.92</div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-bot">
+      <p>© 2026 Alarion Hospitality Pvt. Ltd. — Gurgaon, India.</p>
+      <div class="legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+        <a href="#">Legal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE STICKY BOOK -->
+<div class="m-book">
+  <div>
+    <div class="l">From</div>
+    <div class="p">₹62,000<span>/ night</span></div>
+  </div>
+  <button class="m-reserve">Reserve</button>
+</div>
+
+<!-- RESERVE MODAL -->
+<div class="rsv-overlay" id="rsv-overlay">
+  <div class="rsv-modal" id="rsv-modal" role="dialog" aria-modal="true" aria-labelledby="rsv-title">
+    <button class="rsv-close" id="rsv-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+
+    <!-- form state -->
+    <div class="rsv-form">
+      <div class="rsv-eyebrow eyebrow">Confirm your stay</div>
+      <h3 id="rsv-title">Reserve your suite</h3>
+      <p class="rsv-prop">The Oberoi Udaivilās · Udaipur, Rajasthan</p>
+      <div class="rsv-rows">
+        <div class="rsv-row"><span class="k">Dates</span><span class="v2">Fri, 12 Jun — Sun, 14 Jun</span></div>
+        <div class="rsv-row"><span class="k">Guests</span><span class="v2">2 Adults · 1 Room</span></div>
+        <div class="rsv-row"><span class="k">Room type</span><span class="v2">Luxury Suite, Lake View</span></div>
+        <div class="rsv-row tot"><span class="k">Total (2 nights, incl. tax)</span><span class="v2">₹3,01,380</span></div>
+      </div>
+      <button class="rsv-confirm" id="rsv-confirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Confirm &amp; Pay ₹3,01,380
+      </button>
+      <div class="rsv-fine">You won't be charged until check-in. Free cancellation up to 48 hours before arrival.</div>
+    </div>
+
+    <!-- success state -->
+    <div class="rsv-success">
+      <div class="rsv-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <h3>Reservation confirmed</h3>
+      <p>Your Luxury Suite at The Oberoi Udaivilās is booked. A confirmation has been sent to your email.</p>
+      <div class="rsv-ref">Booking ref · <b id="rsv-ref-code">ALR-7K92</b></div>
+      <button class="rsv-confirm" id="rsv-dismiss">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var overlay = document.getElementById('rsv-overlay');
+    var modal = document.getElementById('rsv-modal');
+    var openers = [document.getElementById('reserve-btn'), document.querySelector('.m-reserve')];
+    function open(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
+    function close(){ overlay.classList.remove('open'); document.body.style.overflow=''; setTimeout(function(){ modal.classList.remove('done'); }, 300); }
+    openers.forEach(function(b){ if(b) b.addEventListener('click', open); });
+    document.getElementById('rsv-close').addEventListener('click', close);
+    document.getElementById('rsv-dismiss').addEventListener('click', close);
+    overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    document.getElementById('rsv-confirm').addEventListener('click', function(){
+      var code = 'ALR-' + Math.random().toString(36).slice(2,6).toUpperCase();
+      document.getElementById('rsv-ref-code').textContent = code;
+      modal.classList.add('done');
+    });
+  })();
+</script>
+
+</body>
+</html>

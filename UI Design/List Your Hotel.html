@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>List Your Hotel — Alarion for Partners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#0B1120; --navy-2:#0E1426; --charcoal:#111827;
+    --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
+    --ink:#F8FAFC; --ink-dim:#B7BECC; --ink-mute:#7A8295;
+    --gold:#C9A66B; --gold-2:#E7C68A;
+    --emerald:#10B981; --royal:#2563EB;
+    --shadow-1: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px rgba(0,0,0,.35);
+    --shadow-2: 0 20px 60px rgba(0,0,0,.45), 0 2px 0 rgba(255,255,255,.04) inset;
+    --shadow-card: 0 30px 80px -20px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--navy); color:var(--ink);
+    font-family:"Manrope", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block}
+  a{color:inherit; text-decoration:none}
+  button{font-family:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  input,select,textarea{font-family:inherit}
+  .container{max-width:1280px; margin:0 auto; padding:0 28px}
+  .eyebrow{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:500; display:inline-flex; align-items:center; gap:10px }
+  .eyebrow::before{content:""; width:22px; height:1px; background:var(--gold); opacity:.7}
+
+  /* NAV */
+  .nav{
+    position:fixed; top:18px; left:50%; transform:translateX(-50%);
+    width:min(1280px, calc(100% - 32px));
+    z-index:60; display:flex; align-items:center; justify-content:space-between;
+    padding:14px 22px;
+    background:rgba(11,17,32,.82); border:1px solid var(--line-strong);
+    backdrop-filter: blur(18px) saturate(140%); border-radius:999px; box-shadow: var(--shadow-1);
+  }
+  .brand{display:flex; align-items:center; gap:12px; font-weight:600}
+  .brand-logo{ height:48px; width:auto; display:block; filter: brightness(1.05) }
+  .nav .brand{ margin: -6px 0 }
+  .nav-links{display:flex; gap:26px; font-size:13.5px; color:var(--ink-dim); font-weight:500}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-actions{ display:flex; align-items:center; gap:16px }
+  .nav-list{ display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; color:var(--gold-2); transition:color .2s }
+  .nav-list:hover{ color:var(--gold) }
+  .nav-list svg{ width:14px; height:14px }
+  .nav-list.active{ color:var(--gold) }
+  .nav-cta{
+    display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px;
+    background:var(--ink); color:var(--navy); font-weight:600; font-size:13px;
+    transition:background .2s, transform .2s;
+  }
+  .nav-cta:hover{background:var(--gold-2); transform:translateY(-1px)}
+  .nav-cta svg{width:14px; height:14px}
+  @media (max-width: 920px){ .nav-links{display:none} }
+  @media (max-width: 620px){ .nav-list{display:none} }
+
+  /* HERO */
+  .lh-hero{ padding: 132px 0 70px; position:relative }
+  .lh-grid{ display:grid; grid-template-columns: 1fr 460px; gap:64px; align-items:start }
+  .lh-copy h1{
+    font-family:"Italiana", serif; font-weight:400; font-size:clamp(44px,5.6vw,80px);
+    line-height:1; letter-spacing:-.005em; margin:20px 0 22px; max-width:640px;
+  }
+  .lh-copy h1 em{ font-style:italic; color:var(--gold-2) }
+  .lh-copy .lede{ color:var(--ink-dim); font-size:17px; line-height:1.6; max-width:500px; margin:0 0 38px }
+  .lh-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; border-top:1px solid var(--line); padding-top:32px; max-width:520px }
+  .lh-stat .num{ font-family:"Italiana", serif; font-size:clamp(36px,4vw,52px); line-height:1; letter-spacing:-.01em }
+  .lh-stat .num span{ color:var(--gold-2) }
+  .lh-stat .lab{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-mute); margin-top:12px }
+
+  /* FORM CARD */
+  .lh-form{
+    background: rgba(248,250,252,.05); border:1px solid var(--line-strong);
+    border-radius:24px; padding:30px 28px; box-shadow: var(--shadow-2);
+    backdrop-filter: blur(14px); position:sticky; top:108px;
+  }
+  .lh-form h3{ font-family:"Italiana", serif; font-weight:400; font-size:26px; margin:0 0 4px }
+  .lh-form .sub{ color:var(--ink-mute); font-size:13px; margin:0 0 22px }
+  .fgrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px }
+  .field{ margin-bottom:14px }
+  .field.full{ grid-column:1/-1 }
+  .field label{ display:block; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-mute); font-weight:600; margin-bottom:7px }
+  .field input, .field select, .field textarea{
+    width:100%; padding:12px 14px; border-radius:11px;
+    background:rgba(11,17,32,.4); border:1px solid var(--line-strong); color:var(--ink);
+    font-size:14px; outline:none; transition:border-color .2s, background .2s;
+  }
+  .field textarea{ resize:vertical; min-height:80px }
+  .field input::placeholder, .field textarea::placeholder{ color:var(--ink-mute) }
+  .field select{ appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%237A8295' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M4 6l4 4 4-4'/></svg>"); background-repeat:no-repeat; background-position:right 14px center; padding-right:38px; cursor:pointer }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--gold); background:rgba(11,17,32,.6) }
+  .field input.err, .field select.err{ border-color:#e2725b }
+  .field.invalid .hint{ display:block }
+  .field .hint{ font-size:11px; color:#e2725b; margin-top:5px; display:none }
+  .lh-submit{
+    width:100%; padding:15px; border-radius:12px; margin-top:6px;
+    background:linear-gradient(180deg, var(--gold-2) 0%, var(--gold) 100%); color:#1a1206;
+    font-weight:700; font-size:14.5px; letter-spacing:.01em;
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    box-shadow:0 14px 34px -12px rgba(201,166,107,.6), 0 0 0 1px rgba(255,255,255,.15) inset;
+    transition:transform .2s;
+  }
+  .lh-submit:hover{ transform:translateY(-1px) }
+  .lh-submit svg{ width:16px; height:16px }
+  .lh-fine{ text-align:center; font-size:11.5px; color:var(--ink-mute); margin-top:14px; line-height:1.5 }
+  /* success */
+  .lh-done{ display:none; text-align:center; padding:18px 4px }
+  .lh-form.sent .lh-formbody{ display:none }
+  .lh-form.sent .lh-done{ display:block }
+  .lh-check{ width:68px; height:68px; border-radius:50%; margin:4px auto 20px; display:grid; place-items:center; background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.4); color:var(--emerald); animation:pop .4s cubic-bezier(.2,.9,.3,1.4) }
+  .lh-check svg{ width:32px; height:32px }
+  @keyframes pop{ from{transform:scale(.5);opacity:0} to{transform:scale(1);opacity:1} }
+  .lh-done h3{ margin-bottom:10px }
+  .lh-done p{ color:var(--ink-dim); font-size:14px; line-height:1.6; margin:0 auto; max-width:300px }
+
+  @media (max-width: 940px){
+    .lh-grid{ grid-template-columns:1fr; gap:40px }
+    .lh-form{ position:static; max-width:520px }
+  }
+
+  /* BENEFITS */
+  .sec{ padding: 60px 0 }
+  .sec-head{ text-align:center; max-width:640px; margin:0 auto 50px }
+  .sec-head .eyebrow{ justify-content:center }
+  .sec-head h2{ font-family:"Italiana", serif; font-weight:400; font-size:clamp(32px,4vw,52px); line-height:1.04; margin:14px 0 0; letter-spacing:-.005em }
+  .sec-head h2 em{ font-style:italic; color:var(--gold-2) }
+  .ben-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px }
+  .ben{ background:var(--navy-2); border:1px solid var(--line); border-radius:20px; padding:32px 26px; transition:transform .4s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s }
+  .ben:hover{ transform:translateY(-6px); border-color:rgba(201,166,107,.3); background:var(--charcoal) }
+  .ben-ico{ width:46px; height:46px; border-radius:12px; background:linear-gradient(180deg, rgba(201,166,107,.18), rgba(201,166,107,.06)); border:1px solid rgba(201,166,107,.28); display:grid; place-items:center; color:var(--gold-2); margin-bottom:24px }
+  .ben-ico svg{ width:21px; height:21px }
+  .ben h3{ font-family:"Italiana", serif; font-weight:400; font-size:23px; margin:0 0 10px; line-height:1.15 }
+  .ben p{ color:var(--ink-dim); font-size:14px; line-height:1.6; margin:0 }
+  @media (max-width: 900px){ .ben-grid{ grid-template-columns:1fr 1fr } }
+  @media (max-width: 540px){ .ben-grid{ grid-template-columns:1fr } }
+
+  /* STEPS */
+  .steps{ background:var(--navy-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line) }
+  .steps-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:50px }
+  .step{ position:relative; padding-top:30px }
+  .step .n{ font-family:"Italiana", serif; font-size:42px; color:var(--gold-2); line-height:1; opacity:.9 }
+  .step h3{ font-family:"Italiana", serif; font-weight:400; font-size:24px; margin:16px 0 10px }
+  .step p{ color:var(--ink-dim); font-size:14.5px; line-height:1.6; margin:0; max-width:320px }
+  .step::before{ content:""; position:absolute; top:0; left:0; width:46px; height:2px; background:var(--gold) }
+  @media (max-width: 760px){ .steps-grid{ grid-template-columns:1fr; gap:36px } }
+
+  /* FOOTER */
+  .foot-contact{ display:flex; gap:28px; flex-wrap:wrap; padding-bottom:22px; margin-bottom:22px; border-bottom:1px solid var(--line) }
+  .foot-contact a{ display:inline-flex; align-items:center; gap:9px; color:var(--ink-dim); font-size:13.5px; font-weight:500; transition:color .2s }
+  .foot-contact a:hover{ color:var(--gold-2) }
+  .foot-contact svg{ width:15px; height:15px; color:var(--gold); flex-shrink:0 }
+  footer{ background:#070A14; border-top:1px solid var(--line); padding: 48px 0 32px; margin-top:60px }
+  .foot-bot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px }
+  .foot-bot p{ color:var(--ink-mute); font-size:12.5px; margin:0 }
+  .foot-bot .legal{ display:flex; gap:24px; color:var(--ink-mute); font-size:12.5px }
+  .foot-bot .legal a:hover{ color:var(--ink) }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="brand" href="Alarion Landing.html">
+    <img class="brand-logo" src="assets/alarion-logo.png" alt="Alarion" />
+  </a>
+  <div class="nav-links">
+    <a href="Alarion Landing.html#hotels">Hotels</a>
+    <a href="Destinations.html">Destinations</a>
+    <a href="Experiences.html">Experiences</a>
+    <a href="Guide.html">Guide</a>
+    <a href="Why-Alarion.html">Why Alarion</a>
+    <a href="Alarion Landing.html#test">Reviews</a>
+  </div>
+  <div class="nav-actions">
+    <a class="nav-list active" href="List Your Hotel.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01"/></svg>
+      List your place
+    </a>
+    <a class="nav-cta" href="Auth.html">
+      Sign In
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="lh-hero">
+  <div class="container lh-grid">
+    <div class="lh-copy">
+      <div class="eyebrow">Alarion for Partners</div>
+      <h1>List your property where <em>discerning</em> guests look first.</h1>
+      <p class="lede">Join a hand-curated collection of India's finest stays. No onboarding fees, a fair flat commission, and a partner team that treats your property like its own.</p>
+      <div class="lh-stats">
+        <div class="lh-stat"><div class="num">2.4<span>M</span></div><div class="lab">Annual visitors</div></div>
+        <div class="lh-stat"><div class="num">+31<span>%</span></div><div class="lab">Avg. occupancy lift</div></div>
+        <div class="lh-stat"><div class="num">48<span>hr</span></div><div class="lab">To go live</div></div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="lh-form" id="lh-form">
+      <div class="lh-formbody">
+        <h3>Start listing — it's free</h3>
+        <p class="sub">Tell us about your property and we'll be in touch within 48 hours.</p>
+        <form id="list-form" novalidate>
+          <div class="field full" id="f-prop">
+            <label>Property name</label>
+            <input type="text" id="prop" placeholder="e.g. The Lotus Haveli" />
+            <div class="hint">Please enter your property name.</div>
+          </div>
+          <div class="fgrid">
+            <div class="field" id="f-type">
+              <label>Property type</label>
+              <select id="ptype">
+                <option value="">Select…</option>
+                <option>Luxury Hotel</option>
+                <option>Heritage Palace</option>
+                <option>Boutique Resort</option>
+                <option>Private Villa</option>
+                <option>Homestay</option>
+                <option>Wellness Retreat</option>
+              </select>
+              <div class="hint">Select a type.</div>
+            </div>
+            <div class="field" id="f-rooms">
+              <label>No. of rooms</label>
+              <input type="number" id="rooms" min="1" placeholder="e.g. 24" />
+              <div class="hint">Enter room count.</div>
+            </div>
+          </div>
+          <div class="field full" id="f-city">
+            <label>City / Location</label>
+            <input type="text" id="city" placeholder="e.g. Udaipur, Rajasthan" />
+            <div class="hint">Please enter a location.</div>
+          </div>
+          <div class="fgrid">
+            <div class="field" id="f-name">
+              <label>Your name</label>
+              <input type="text" id="cname" placeholder="Full name" />
+              <div class="hint">Required.</div>
+            </div>
+            <div class="field" id="f-phone">
+              <label>Phone</label>
+              <input type="tel" id="phone" placeholder="+91 ……" />
+              <div class="hint">Required.</div>
+            </div>
+          </div>
+          <div class="field full" id="f-email">
+            <label>Email address</label>
+            <input type="email" id="email" placeholder="you@property.com" />
+            <div class="hint">Enter a valid email.</div>
+          </div>
+          <button class="lh-submit" type="submit">
+            Submit application
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+          </button>
+          <div class="lh-fine">No listing fee · No exclusivity · Cancel anytime</div>
+        </form>
+      </div>
+      <div class="lh-done">
+        <div class="lh-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h3>Application received</h3>
+        <p>Thank you — our partnerships team will reach out within 48 hours to walk you through the next steps.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Why partner with Alarion</div>
+      <h2>Built for owners who care about <em>their guests.</em></h2>
+    </div>
+    <div class="ben-grid">
+      <div class="ben">
+        <div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>Premium audience</h3>
+        <p>Reach 2.4M high-intent travellers a year who book stays, not just rooms.</p>
+      </div>
+      <div class="ben">
+        <div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <h3>Fair flat commission</h3>
+        <p>One transparent rate. No tiered penalties, no pay-to-rank auctions, ever.</p>
+      </div>
+      <div class="ben">
+        <div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <h3>Dedicated manager</h3>
+        <p>A real person who knows your property and helps you grow, not a ticket queue.</p>
+      </div>
+      <div class="ben">
+        <div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18M7 14l4-4 3 3 5-6"/></svg></div>
+        <h3>Smart pricing tools</h3>
+        <p>Demand-based rate suggestions and a live dashboard for occupancy and revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="sec steps">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">How it works</div>
+      <h2>From application to first booking in <em>three steps.</em></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Apply &amp; verify</h3>
+        <p>Submit your property details. Our team reviews and schedules a quick verification visit.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Build your listing</h3>
+        <p>We photograph, write and set up your page with your dedicated manager — at no cost.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Go live &amp; earn</h3>
+        <p>Your stay appears to millions of travellers. You're paid promptly after every checkout.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-contact">
+      <a href="mailto:concierge@alarion.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>concierge@alarion.com</a>
+      <a href="tel:+911247160000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>+91 124 716 0000</a>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Alarion Hospitality Pvt. Ltd. — Gurgaon, India.</p>
+      <div class="legal">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a><a href="#">Legal</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var form = document.getElementById('list-form');
+    var card = document.getElementById('lh-form');
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    function bad(id, cond){
+      var f = document.getElementById(id);
+      f.classList.toggle('invalid', cond);
+      var c = f.querySelector('input,select'); if(c) c.classList.toggle('err', cond);
+      return cond;
+    }
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var v = function(id){ return (document.getElementById(id).value||'').trim(); };
+      var hasErr = false;
+      hasErr = bad('f-prop', !v('prop')) || hasErr;
+      hasErr = bad('f-type', !v('ptype')) || hasErr;
+      hasErr = bad('f-rooms', !v('rooms')) || hasErr;
+      hasErr = bad('f-city', !v('city')) || hasErr;
+      hasErr = bad('f-name', !v('cname')) || hasErr;
+      hasErr = bad('f-phone', !v('phone')) || hasErr;
+      hasErr = bad('f-email', !emailRe.test(v('email'))) || hasErr;
+      if(hasErr) return;
+      card.classList.add('sent');
+      card.scrollTop = 0;
+    });
+  })();
+</script>
+
+</body>
+</html>
